@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- <script src="./utils/parameters.js"></script>
+    <script src="jatos.js"></script>
+    <script src="js/eyetrack_html.js" type="module"></script>
+
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.2"></script> -->
+
+
+    
+    <title>Test Tracker</title>
+</head>
+<body>
+    <div>
+      <a> SOME TEST TEXT </a>
+    </div>
+    <script src="js/lib/face-api.js"></script>
+    <script src="utils/parameters.js"></script>
+    <script src="./js/eyetracker.js" type="module"></script>
+    <link rel="preload" href="./js/lib/p5.min_mod.js" as="script"></link>
+    <script src="./js/p5setup.js" type="module"></script>
+    <script src="./js/p5jsDraw.js" type="module"></script>
+  
+  
+    
+    <script>     
+      
+      /* initialize jsPsych */
+      
+      
+      var jsPsych = initJsPsych({     
+        on_finish: () => window.location.href = "https://mirror.deepeye.labs.vu.nl/"
+      });
+
+  
+      /* create timeline */
+      var timeline = [];
+
+            
+      var setup_eyeTracker = {
+          type: jsPsychCallFunction,
+          async: true,
+          func: function(done){
+
+            eyetracker.setup(done);
+            
+            
+          }
+        }
+       
+              
+      timeline.push(setup_eyeTracker);
+
+      var calibrate = {
+          type: jsPsychCallFunction,
+          async: true,
+          func: function(done){
+            eyetracker.calibrate(done, undefined, numCalibDots=13);        
+          }
+        }
+       
+              
+      timeline.push(calibrate);
+      
+      jsPsych.run(timeline);      
+  
+    </script>
+  
+    
+</body>
+</html>

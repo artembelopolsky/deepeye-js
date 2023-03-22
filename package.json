@@ -2,9 +2,9 @@
   "name": "calibrationprocedure",
   "version": "1.0.0",
   "description": "",
-  "main": "eyetracker.js",
+  "main": "./src/eyetracker.js",
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --config webpack.config.js --progress"
   },
   "repository": {
     "type": "git",
