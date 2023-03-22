@@ -9,12 +9,12 @@ export var html = `
                   <div class="my-2"></div>
               </div>
               <div class="align-items-center d-flex justify-content-center p-0">
-                <a type="button" id="recalibrate-button" class="btn btn-outline-primary ml-4" >Re-calibrate<i
-                    class="bi bi-arrow-repeat m-1"></i></a>                                            
-                <a href="https://mirror.deepeye.labs.vu.nl/dashboard" type="button" id="accept-button" class="btn btn-outline-primary ml-4" >Accept<i
-                    class="bi bi-arrow-right m-1"></i></a>  
+                <button id="recalibrate-button" class="btn btn-outline-primary ml-4" >Re-calibrate<i
+                    class="bi bi-arrow-repeat m-1"></i></button>                                            
+                <button id="accept-button" class="btn btn-outline-primary ml-4" disabled >Accept<i
+                    class="bi bi-arrow-right m-1"></i></button>  
             </div>
-              <div class="my-2"></div>
+              <div class="justify-content-center" id='text-message'></div>
           </div>
 
   </div>

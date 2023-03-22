@@ -62,6 +62,7 @@ export function draw(){
         // console.log('eytracker timestamp : ',eyetracker.timestamp)
         console.log(eyetracker.prevTime + eyetracker.dot.config.delayWebcamCapture)
 
+        // capture webcam frames at half time the display frame rate (typically 60Hz, set in p5setup.js)
         if(eyetracker.frameCount%2==0) {
           // start saving frames only after a delay from when the dot is presented
           if(eyetracker.timestamp > eyetracker.prevTime + eyetracker.dot.config.delayWebcamCapture){

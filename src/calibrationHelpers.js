@@ -69,22 +69,18 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
 
     let requestData = {
         'frame_data': frame_data,
-        'system_info': system_info //(screen size, width, etc.)
-    }
-
-    var api_creds = document.cookie.split('; ')
-    .find(row => row.startsWith('user_token='))
-    .split('=')[1];
+        'system_info': eyetracker.system_info //(screen size, width, etc.)
+    }   
   
     eyetracker.activeHTTPRequestCounter += 1;
 
     var headers = {
         'Content-Type': 'application/json',
-        'experiment-id' : '../../../data/CalibrationGameJSDataset', // name of data folder on the server (connected to my SciStor)
+        'experiment-id' : 'Test_CalibrationConfig_01', // name of data folder on the server
         'participant-id' : eyetracker.paramHandler.session_timestamp, // participant's session timestamp id, globbally defined in parameters.js
         'type-dataset' : type_dataset, // training or testing calibration dataset
         'final-batch' : eyetracker.final_batch,
-        'user-token' : api_creds
+        'user-token' : 'dHs1XlfeWlM38NCqQHpoaxVjqH3JNkYYwHqpA6FmAg20jy2ba3ZR10hVSeBl'
     }
     
     if(type_dataset == 'train') {
@@ -119,7 +115,14 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
                 if (eyetracker.isExperimentOver && eyetracker.activeHTTPRequestCounter == 0) {
                     error_calibration= true;
                     helpers.vars.endExperimentButton.html('Error processing frames.\n Click to restart');
-                    helpers.vars.endExperimentButton.mousePressed(helpers.restart_calibration);  //restart calibration
+                    
+                    //restart calibration with the same parameters     
+                    helpers.vars.endExperimentButton.mousePressed(()=> { remove(); // removes p5js library
+                                                                        eyetracker.calibrate(eyetracker.return_jsPsych,
+                                                                        eyetracker.validationOnly, eyetracker.numCalibDots,
+                                                                        eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);
+                                                                        }
+                                                                    );
                 }
             });
     }
@@ -152,9 +155,16 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
                 console.error(error);
                 eyetracker.activeHTTPRequestCounter -= 1;
                 if (eyetracker.isExperimentOver && eyetracker.activeHTTPRequestCounter == 0) {
-                  error_validation = true;
-                  helpers.vars.endExperimentButton.html('Error processing frames.\n Click to restart');
-                  helpers.vars.endExperimentButton.mousePressed(helpers.restart_calibration);  //restart calibration
+                    error_validation = true;
+                    helpers.vars.endExperimentButton.html('Error processing frames.\n Click to restart');
+
+                    //restart calibration with the same parameters     
+                    helpers.vars.endExperimentButton.mousePressed(()=> { remove(); // removes p5js library
+                                                                        eyetracker.calibrate(eyetracker.return_jsPsych,
+                                                                        eyetracker.validationOnly, eyetracker.numCalibDots,
+                                                                        eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);
+                                                                        }
+                                                                );
                 }
                   
             });
@@ -183,6 +193,15 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
             .catch(function (error) {
                 console.error(error);
                 eyetracker.activeHTTPRequestCounter -= 1;
+
+                //restart calibration with the same parameters     
+                helpers.vars.endExperimentButton.mousePressed(()=> {remove(); // removes p5js library
+                                                                    eyetracker.calibrate(eyetracker.return_jsPsych,
+                                                                    eyetracker.validationOnly, eyetracker.numCalibDots,
+                                                                    eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);
+                                                                    }
+                                                                );
+
                 // if (eyetracker.isExperimentOver && eyetracker.activeHTTPRequestCounter == 0) {
                 //   error_validation = true;
                 //   helpers.vars.endExperimentButton.html('Error processing frames.\n Click to restart');
@@ -190,8 +209,6 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
                   
             });
     }
-
-
 }
 
 
@@ -223,12 +240,24 @@ export function trainUserModel(headers,requestData){
         console.error(error);
         eyetracker.error_calibration = true;
         helpers.vars.endExperimentButton.html('Calibration error.\n Click to restart');
-        helpers.vars.endExperimentButton.mousePressed(helpers.restart_calibration);  //restart calibration
+        
+        //restart calibration with the same parameters     
+        helpers.vars.endExperimentButton.mousePressed(()=> { remove(); // removes p5js library
+                                                            eyetracker.calibrate(eyetracker.return_jsPsych,
+                                                            eyetracker.validationOnly, eyetracker.numCalibDots,
+                                                            eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);
+                                                            }
+                                                        );
       });
   
   }
 
 export function plotValidationResults(headers, requestData) {
+
+    // if you want to record all attempted testdatasets in one file
+    if(eyetracker.demoMode == false) {
+        headers['final-batch'] = 'keep_testdataset';
+    }
 
     fetch(eyetracker.api_url + "/plotValidationResults", {
       method: 'POST',
@@ -245,65 +274,131 @@ export function plotValidationResults(headers, requestData) {
           return response.json();
       })
       .then(function (json) {
+        // json is an json dict with [b64 image, mean_err and std_err]
   
-        if(json.includes("data:image/jpg;base64,") ) {
-          eyetracker.done_validation = true;
-          background(255); // set to white
-          helpers.vars.endExperimentButton.hide();
-          fullscreen(false);      
-          noLoop();
-        
-          document.body.style.overflow = "visible"; // turns the page scroller back on (turned off in html)
-          document.getElementById('defaultCanvas0').style.display = 'none'
-          document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "none";
-
-          var div = document.createElement('validationResult');
-          div.setAttribute('id', 'validation-result'); 
-          document.body.appendChild(div);
-          div.innerHTML = eyetracker.validation_html;
-                  
-          const image = document.getElementById("result-image");
-          image.src = json; 
-
-          // reset log variables
-          eyetracker.FrameDataLog.frameNr = -1; 
-          eyetracker.FrameDataLog.timestamp = -1;
-          eyetracker.FrameDataLog.trialNr = -1;
-          eyetracker.base64data = []; // remove the logs remaining from validation
-
-          // pass the stored callback function to be able to return back to jsPsych
-          document.getElementById("accept-button").addEventListener("click", ()=> {            
-            document.getElementById('validation-result').remove();            
-            document.getElementById('face-screen').style.display= 'none'; // hide face detection html to keep using video tag during recording
+        if(json['b64image'].includes("data:image/jpg;base64,") ) {
             
-            remove(); // removes p5js library
-            document.getElementById("preloaded-p5js").remove(); // remove html element
-            document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "flex";
-            eyetracker.return_jsPsych();}); 
-            eyetracker.numCalibrationAttempts = 0; // reset the number of calibration attempts
+            let meanError =  parseFloat(json['mean_err']);
+            let stdError = parseFloat(json['std_err']);                   
+
+            eyetracker.done_validation = true;
+            background(255); // set to white
+            helpers.vars.endExperimentButton.hide();            
+            noLoop();
         
-          // Add restart calibration to 'try again' button
-          document.getElementById("recalibrate-button").addEventListener("click", ()=> {            
-            document.getElementById('validation-result').remove();           
-            // new way: show webcam feed during recalibration
-            document.getElementById('face-screen').style.display= 'none'; // hide face detection html to keep using video tag during recording            
-            remove(); // removes p5js library
-            document.getElementById("preloaded-p5js").remove(); // remove html element
-            eyetracker.calibrate(eyetracker.return_jsPsych); 
-            
-            eyetracker.numCalibrationAttempts += 1;
-            console.log(`Calibration attempt #: ${eyetracker.numCalibrationAttempts+1}`);
-            // if(eyetracker.numCalibrationAttempts == 5) {jatos.endStudy()};
-          });
+            document.body.style.overflow = "visible"; // turns the page scroller back on (turned off in html)
+            document.getElementById('defaultCanvas0').style.display = 'none'
+            document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "none";
+
+            var div = document.createElement('validationResult');
+            div.setAttribute('id', 'validation-result'); 
+            document.body.appendChild(div);
+            div.innerHTML = eyetracker.validation_html;          
+                    
+            const image = document.getElementById("result-image");
+            image.src = json['b64image'];
+
+          
+          
+          // enable accept button if calibration error is below validationThreshold
+          // only in JATOS mode
+            if(eyetracker.demoMode == false) {
+                let textNode1, textNode2;
+                if(document.getElementById("accept-button")) {            
+                    if(meanError <= eyetracker.validationThreshold) {                   
+                        document.getElementById("accept-button").disabled = false;
+                        document.getElementById("recalibrate-button").disabled = true;
+                    }
+                    // add text informing about validationThreshold
+                    else {
+                        // when only validation, no need to redo it
+                        if(eyetracker.validationOnly == false){
+                            
+                            document.getElementById("accept-button").disabled = true;
+
+                            if(eyetracker.numCalibrationAttempts+1 == eyetracker.maxCalibrationAttempts) {
+                                textNode1 = document.createTextNode('You could not be calibrated for this configuration, please continue');
+                                document.getElementById("accept-button").disabled = false;
+                                document.getElementById("recalibrate-button").disabled = true;
+                            }
+                            else { 
+                                textNode1 = document.createTextNode(`Try again: The error needs to be below ${eyetracker.validationThreshold} cm. Check your lighting conditions.`);
+                            }
+                            
+                            textNode2 = document.createTextNode(`Calibration attempt ${eyetracker.numCalibrationAttempts+1} out of ${eyetracker.maxCalibrationAttempts}`);
+                            document.getElementById("text-message").style.fontSize = "20px";
+                            document.getElementById("text-message").appendChild(textNode1);
+                            document.getElementById("text-message").appendChild(document.createElement("br"));
+                            document.getElementById("text-message").appendChild(textNode2);
+                        }
+                        else {
+                            document.getElementById("accept-button").disabled = false;
+                            document.getElementById("recalibrate-button").disabled = true;
+                            textNode1 = document.createTextNode('Please continue');
+                            document.getElementById("text-message").style.fontSize = "20px";
+                            document.getElementById("text-message").appendChild(textNode1);
+                        }
+                    }
+                }
+            }
+            else {document.getElementById("accept-button").disabled = false; }
+          
+
+            // reset log variables
+            eyetracker.FrameDataLog.frameNr = -1;
+            eyetracker.FrameDataLog.timestamp = -1;
+            eyetracker.FrameDataLog.trialNr = -1;
+            eyetracker.base64data = []; // remove the logs remaining from validation
+
+            // pass the stored callback function to be able to return back to jsPsych
+            document.getElementById("accept-button").addEventListener("click", ()=> {            
+                document.getElementById('validation-result').remove();            
+                document.getElementById('face-screen').style.display= 'none'; // hide face detection html to keep using video tag during recording
+                
+                remove(); // removes p5js library
+                document.getElementById("preloaded-p5js").remove(); // remove html element
+                document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "flex";
+                eyetracker.numCalibrationAttempts = 0; // reset the number of calibration attempts
+                eyetracker.return_jsPsych();
+            }); 
+           
+        
+            // Add restart calibration to 're-calibrate' button
+            document.getElementById("recalibrate-button").addEventListener("click", ()=> {            
+                document.getElementById('validation-result').remove();           
+                // new way: show webcam feed during recalibration
+                document.getElementById('face-screen').style.display= 'none'; // hide face detection html to keep using video tag during recording            
+                remove(); // removes p5js library
+                document.getElementById("preloaded-p5js").remove(); // remove html element 
+                
+                // track the number of calibration attempts
+                eyetracker.numCalibrationAttempts += 1;
+                console.log(`Calibration attempt #: ${eyetracker.numCalibrationAttempts+1}`);
+
+                // for Jatos deployment, not for Demo
+                // end study after max unsuccessful recalibration attempts
+                // if(eyetracker.demoMode == false) {
+                //     if(eyetracker.numCalibrationAttempts == eyetracker.maxCalibrationAttempts) {jatos.endStudy();}
+                // }
+                
+                // recalibrate with the same parameters (e.g. number of calibration dots) as in the original call
+                eyetracker.calibrate(eyetracker.return_jsPsych, eyetracker.validationOnly, eyetracker.numCalibDots, eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);                           
+            });
             
               
         }
       })
       .catch(function (error) {
-        console.error(error);
+        console.error(error);        
         eyetracker.error_validation = true;
         helpers.vars.endExperimentButton.html('Error plotting validation.\n Click to restart');
-        helpers.vars.endExperimentButton.mousePressed(helpers.restart_calibration);  //restart calibration
+        //restart calibration with the same parameters     
+         helpers.vars.endExperimentButton.mousePressed(()=>{remove(); // removes p5js library
+                                                            eyetracker.calibrate(eyetracker.return_jsPsych,
+                                                            eyetracker.validationOnly, eyetracker.numCalibDots,
+                                                            eyetracker.dotDuration, eyetracker.CALIBRATION_COLOR_SCHEME.background);
+                                                            }
+                                                        );
       });    
   
   }
@@ -366,7 +461,7 @@ export function end_experiment() {
     if(done_model_training == true) {
         helpers.vars.endExperimentButton.hide();
       //fullscreen(false); // reduce the screen to normal size
-      jatos.startNextComponent(system_info); // jatos function to go to the next jatos component
+    //   jatos.startNextComponent(system_info); // jatos function to go to the next jatos component
     }
   
 }
@@ -379,7 +474,7 @@ export function next_condition() {
     helpers.vars.endExperimentButton.hide();
     helpers.vars.instructionDiv.show();
     helpers.vars.pauzeButton.show();
-    helpers.vars.endExperimentButton.html('Validating...');   
+    helpers.vars.endExperimentButton.html('VALIDATING...');   
       
 }
 

@@ -3,7 +3,7 @@ export function displayWelcomeBtn(){
   helpers.vars.welcomeButton = createButton('START EXPERIMENT');
   helpers.vars.welcomeButton.size(window.screen.width/4, window.screen.width/5/3);
   helpers.vars.welcomeButton.style('color', color(25, 23, 200));
-  helpers.vars.welcomeButton.style("font-family", "Comic Sans MS");
+  helpers.vars.welcomeButton.style("font-family", "Arial");
   helpers.vars.welcomeButton.style("font-size", "25px");
   helpers.vars.welcomeButton.position(window.screen.width/2, window.screen.height-window.screen.height/3);
   helpers.vars.welcomeButton.center('horizontal');
@@ -25,7 +25,6 @@ export function displayInstructions(){
 }
 
 export function displayPauzeBtn(){
-
   
   if (eyetracker.CALIBRATION_STEPS.length == 1) {
     helpers.vars.pauzeButton = createButton('START VALIDATION'); // if validation only
@@ -35,12 +34,11 @@ export function displayPauzeBtn(){
   }
   helpers.vars.pauzeButton.size(window.screen.width/5, window.screen.width/5/3);
   helpers.vars.pauzeButton.style('color', color(25, 23, 200));
-  helpers.vars.pauzeButton.style("font-family", "Comic Sans MS");
+  helpers.vars.pauzeButton.style("font-family", "Arial");
   helpers.vars.pauzeButton.style("font-size", "25px");
   helpers.vars.pauzeButton.position(window.screen.width/2, window.screen.height-window.screen.height/3);
   helpers.vars.pauzeButton.center('horizontal');
   // helpers.vars.pauzeButton.hide();
-  
  
   helpers.vars.pauzeButton.mousePressed(window.helpers.take_a_break);
 }
@@ -48,16 +46,19 @@ export function displayPauzeBtn(){
 export function displayEndExperimentBtn(){
 
   if (eyetracker.CALIBRATION_STEPS.length == 1) {
-    helpers.vars.endExperimentButton = createButton('Validating...'); // if validation only
+    helpers.vars.endExperimentButton = createButton('VALIDATING...'); // if validation only
   }
   else {
-    helpers.vars.endExperimentButton = createButton('Calibrating...');
+    helpers.vars.endExperimentButton = createButton('CALIBRATING...');
+    if(eyetracker.numCalibrationAttempts == 0) {
+      helpers.vars.endExperimentButton.html('<br>first time may take up to 1 min...', true); // append text
+    };
   }
   
   helpers.vars.endExperimentButton.size(600, 300);
   helpers.vars.endExperimentButton.style('color', color(25, 23, 200));
-  helpers.vars.endExperimentButton.style("font-family", "Comic Sans MS");
-  helpers.vars.endExperimentButton.style("font-size", "48px");
+  helpers.vars.endExperimentButton.style("font-family", "Arial");
+  helpers.vars.endExperimentButton.style("font-size", "35px");
   helpers.vars.endExperimentButton.style('line-height', 1.8);
   helpers.vars.endExperimentButton.center();
   helpers.vars.endExperimentButton.hide();
@@ -97,7 +98,7 @@ export function resetSetup() {
   helpers.vars.randomY = window.screen.height/2;  
 
   // get instance of dot class with settings for upcoming trial  
-  eyetracker.dot = new Dot(helpers.vars.randomX, helpers.vars.randomY, 18, 50, 0, 255, eyetracker.numCalibDots); 
+  eyetracker.dot = new Dot(helpers.vars.randomX, helpers.vars.randomY, 18, 50, 0, 255, eyetracker.numCalibDots, eyetracker.dotDuration); 
 
   shuffle(eyetracker.dot.LOCATIONS, true); // shuffle static dot location inplace
 

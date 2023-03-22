@@ -1,9 +1,10 @@
 export class ParamHandler{
     /**
      * Helper class for eyetracker that handles getting parameters from client
+     * It is passed a parent object, which is the eyetracker object
      */
 
-    constructor(html){
+    constructor(parentObject=null, html){
         this.html = html;
 
         //// INITIALIE ALL PARAMETERS :
@@ -26,6 +27,7 @@ export class ParamHandler{
     }
 
     setHTML(){
+      
         // hide present body element
         var initial_content = document.getElementsByTagName('body')[0];
         for (const child of initial_content.children) child.style.display = 'none';
@@ -90,10 +92,10 @@ export class ParamHandler{
         // devicePixelRatio - A value of 1 indicates a classic 96 DPI (76 DPI on some platforms) display, while a value of 2 is expected for HiDPI/Retina displays
         // scale by how much the size of credit card is increased/decreased.
         var cardcm = (cardpx / (devicePixelRatio * 96) / this.scale) * 2.54;
-        this.width_in_cm = (cardcm / cardpx) * screen.width;
-        this.width_in_inch = this.width_in_cm /  2.54;
+        this.width_cm = (cardcm / cardpx) * screen.width;
+        this.width_in_inch = this.width_cm /  2.54;
         //update UI
-        document.getElementById('width').innerHTML = this.width_in_cm.toFixed(2);
+        document.getElementById('width').innerHTML = this.width_cm.toFixed(2);
         document.getElementById('width_inch').innerHTML = this.width_in_inch.toFixed(2);
         this.resWidth = screen.width;
         this.resHeight = screen.height;
@@ -134,35 +136,41 @@ export class ParamHandler{
         }
     }
 
-    saveScreenDims(nextComponent = false){
+    saveScreenDims(nextComponent = false){        
 
-        localStorage.setItem("resWidth",this.resWidth);
-        localStorage.setItem("resHeight",this.resHeight);
-        localStorage.setItem("width_cm",this.width_in_cm);
-        localStorage.setItem("dpi_x", this.dpi_x);
+        eyetracker.system_info.screen_resolution = [Math.floor(this.resWidth), Math.floor(this.resHeight)];
+        eyetracker.system_info.scrW_cm = parseFloat(this.width_cm);
+        eyetracker.system_info.dpi_x = this.dpi_x;
+
+        // set the default vertical distance if webcam setup html is dropped in the future
+        eyetracker.system_info.top_left_tocam_cm = [-eyetracker.system_info.scrW_cm/2, -(1.0)];
     
-        this.toggle_screendim()
-
-
+        this.toggle_screendim();
     }
 
     saveVerticalDist(){
 
-        localStorage.setItem("verticalDist", document.getElementById('verticalDist').value);
+      /* Get the documentElement (<html>) to display the page in fullscreen */
+      let wholeDocumentElement = document.documentElement;
+      
+      this.openFullscreen(wholeDocumentElement);
 
-        // clear html : 
-        document.getElementById('ScreenDimensions').remove();
-        document.getElementById('WebcamPosition').remove();  
-        
-        //disable loops  
-        clearInterval(eyetracker.paramHandler.loop);       
+      this.verticalDist = document.getElementById('verticalDist').value;        
+      eyetracker.system_info.top_left_tocam_cm = [-eyetracker.system_info.scrW_cm/2, -(parseFloat(this.verticalDist))];
 
-        // resets jsPsych element (needed for proper return to jsPsych)
-        document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "flex";
-        
-        // returns control to jsPsych         
-        eyetracker.return_jsPsych();
-       
+      // clear html : 
+      document.getElementById('ScreenDimensions').remove();
+      document.getElementById('WebcamPosition').remove();  
+      
+      //disable loops  
+      clearInterval(eyetracker.paramHandler.loop);       
+
+      // resets jsPsych element (needed for proper return to jsPsych)
+      document.getElementsByClassName("jspsych-content-wrapper")[0].style.display = "flex";
+      
+      // returns control to jsPsych         
+      eyetracker.return_jsPsych();
+      
     
     }
 
@@ -174,6 +182,16 @@ export class ParamHandler{
           if(parseInt(el.value) > parseInt(el.max)){
             el.value = el.max;
           }
+        }
+      }
+
+    openFullscreen(elem) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
         }
       }
 

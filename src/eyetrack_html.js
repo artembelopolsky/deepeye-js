@@ -122,8 +122,8 @@ export var html = `
                             </small></h5>
                     </div>
                     <div class="col">
-                        <input class="col-md-6" type="number" id="verticalDist" class="form-control form-control-user" min=0.0 step=0.1
-                            placeholder="1.0 cm" onkeyup=eyetracker.paramHandler.imposeMinMax(this)>
+                        <input class="col-md-6" type="number" id="verticalDist" class="form-control form-control-user" min=-100.0 step=0.1
+                            value=0.5 placeholder="0.5 cm" onkeyup=eyetracker.paramHandler.imposeMinMax(this)>
                     </div>
                 </div>
 

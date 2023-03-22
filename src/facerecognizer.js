@@ -35,11 +35,11 @@ export class FaceDetection {
         this.canvas = document.getElementById("face_detection"); // canvas on which the face detection works
 
         this.getWebcamName() // get default webcam
-        .then(async()=> {
-          await faceapi.nets.tinyFaceDetector.loadFromUri('js/CalibrationProcedure/js/models'); // load model serially
+        .then(async()=> {         
+            await faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
           })
-        .then(async()=> {            
-          await faceapi.nets.faceLandmark68Net.loadFromUri('js/CalibrationProcedure/js/models'); // load model serially
+        .then(async()=> {         
+            await faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
           })
         .then(this.startVideoAndFaceDetection()) // start webcam followed by face detection
         .catch((err) => {
@@ -93,7 +93,12 @@ export class FaceDetection {
 
   async startVideoAndFaceDetection() {  
     
-    navigator.mediaDevices.getUserMedia({ video: {deviceId: this.default_webcam}}).then((stream) => {
+    navigator.mediaDevices.getUserMedia(
+      { video: { 
+        deviceId: this.default_webcam,
+        frameRate: {ideal: 30.0, max: 30.0}, //make sure webcamRate is the same as rate of capture during calibration
+        }
+      }).then((stream) => {
           
       this.parentObject.video = document.getElementById("video");
       this.parentObject.video.srcObject = stream;
@@ -101,6 +106,9 @@ export class FaceDetection {
       
       console.log('default webcam in startVideo() : ',this.default_webcam);
 
+      console.log(`frameRate is: ${this.parentObject.videoSettings.frameRate}`);
+      this.parentObject.system_info.webcamFrameRate = this.parentObject.videoSettings.frameRate;
+    
       this.startFaceDetection();
       
     });    

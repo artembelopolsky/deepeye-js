@@ -18,7 +18,7 @@ class EyeTracker {
      * and saving parameters such as webcam position
      */
     constructor(paramhtml,facehtml,validation_html){
-        this.paramHandler = new ParamHandler(paramhtml);        
+        this.paramHandler = new ParamHandler(this, paramhtml);        
         this.faceDetection = new FaceDetection(this, facehtml);
         this.validation_html = validation_html;
         this.base64data = [];
@@ -31,12 +31,13 @@ class EyeTracker {
         this.pauze=false;
         this.startStaticDot = false; // called "ready" in old script
         this.videoSettings;
-        this.video;       
+        this.video;
+        this.webcamFrameRate;       
         this.finalbatch = false;
         this.type_dataset = 'train';
         this.index_conditions=0;
         this.frameCount=0;
-        this.api_url = "https://mirror.deepeye.labs.vu.nl/firebase"
+        this.api_url = "https://deepeye.labs.vu.nl/firebase"
         this.fullscreen = false;
         this.CALIBRATION_STEPS = ['train', 'test']; // calibrate, then validate    
         
@@ -51,18 +52,31 @@ class EyeTracker {
         this.error_validation = false;
 
         this.detections;
-        this.numCalibDots = 0;
+        this.numCalibDots = 13;
         this.numCalibrationAttempts = 0;
+        this.maxCalibrationAttempts = 3; 
+        this.validationThreshold = 3.0; // threshold needed to accept validation result
+        this.validationOnly = false;
 
         this.CALIBRATION_COLOR_SCHEME = {
             fill: 0,
-            background: 160,
+            background: 255,
             textStrokeWeight: 3,
             textStrokeColor: [0, 0, 0],
             color_bulls_eye: 255
           }
-
         
+        // default screen and webcam settings
+        this.system_info = {
+            'screen_resolution': [screen.width, screen.width],
+            'top_left_tocam_cm' : [-parseFloat(30.0)/2, -(1.0)],
+            'scrW_cm' : parseFloat(30.0),
+            'dpi_x' :  96.0,
+            'webcamFrameRate': -1
+            }
+        
+        // different settings depending on jatos or demo mode
+        this.demoMode = false;        
         
         // -1 means 'not set'
         this.FrameDataLog = {
@@ -85,10 +99,15 @@ class EyeTracker {
             }
     }
 
-    calibrate(done, validationOnly=false, numCalibDots=13, calibrationBackground=255){
+    calibrate(done, validationOnly=false, numCalibDots=13, dotDuration=2300, calibrationBackground=255){        
         
-        this.numCalibDots = numCalibDots;        
-        this.CALIBRATION_COLOR_SCHEME.background = calibrationBackground;        
+        // demoMode uses default values
+        if(this.demoMode == false) {
+            this.validationOnly = validationOnly;
+            this.numCalibDots = numCalibDots;
+            this.dotDuration = dotDuration;        
+            this.CALIBRATION_COLOR_SCHEME.background = calibrationBackground;
+        }            
         
         // initialize webcam and face detection (returns a promise),  
         this.init_webcam() 
@@ -98,9 +117,9 @@ class EyeTracker {
                 // Load p5 js NOTE: preload() is renamed to preload1() in p5.min.js to avoid conflict with jsPsych
 
                 const preloadedScript = document.createElement("script");
-                preloadedScript.src = "js/CalibrationProcedure/js/lib/p5.min_mod.js";
+                preloadedScript.setAttribute('id', 'preloaded-p5js');               
+                preloadedScript.src = "./js/lib/p5.min_mod.js";       
                 document.body.appendChild(preloadedScript);
-
                 
                 //set p5js setup and draw functions to start calibration
                 window.setup = this.p5setup.setup; // this creates defaultCanvas that is required for p5js
@@ -110,8 +129,11 @@ class EyeTracker {
                 this.return_jsPsych = done; // hang this function under the window.eyetracker object, called in calibrationHelpers.js 
                 
                 // if only validation should be run (assuming the user model has been generated during the session)
-                if(validationOnly==true) {
+                if(this.validationOnly==true) {
                     this.CALIBRATION_STEPS = ['test']; // calibrate, then validate
+                }
+                else {
+                    this.CALIBRATION_STEPS = ['train', 'test']; // calibrate, then validate
                 }
                 
                 })
