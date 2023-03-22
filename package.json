@@ -1,24 +1,33 @@
 {
-  "name": "deepeyetracker",
+  "name": "calibrationprocedure",
   "version": "1.0.0",
-  "description": "Javascript library for using deepeye eyetracker api.",
+  "description": "",
   "main": "eyetracker.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lstuurmanVU/deepeyetracker-js.git"
+    "url": "git+https://github.com/artembelopolsky/CalibrationProcedure.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lstuurmanVU/deepeyetracker-js/issues"
+    "url": "https://github.com/artembelopolsky/CalibrationProcedure/issues"
   },
-  "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme",
-  "dependencies": {
-    "save-dev": "^0.0.1-security",
-    "webpack": "^5.76.3",
+  "homepage": "https://github.com/artembelopolsky/CalibrationProcedure#readme",
+  "devDependencies": {
+    "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "@jspsych/plugin-call-function": "^1.1.2",
+    "@jspsych/plugin-fullscreen": "^1.1.2",
+    "@jspsych/plugin-html-keyboard-response": "^1.1.2",
+    "@jspsych/plugin-image-keyboard-response": "^1.1.2",
+    "face-api.js": "^0.22.2",
+    "jspsych": "^7.3.2",
+    "p5js": "^1.2.18"
   }
 }
