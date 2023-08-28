@@ -14,4 +14,13 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: ['.ts', '.js'],
+    fallback: {
+        "crypto": false,
+        "util": false,
+        "node-fetch":false,
+        "fs":false,
+    }
+  },
 };

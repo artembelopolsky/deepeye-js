@@ -9,15 +9,22 @@ import {Dot} from './dot.js'
 import {html as validation_html} from './validation_html.js'
 import {FaceDetection} from './facerecognizer.js';
 
-import "jspsych"
-import "@jspsych/plugin-call-function"
-import "@jspsych/plugin-fullscreen"
-import "@jspsych/plugin-html-keyboard-response"
-import "@jspsych/plugin-image-keyboard-response"
-import "face-api.js"
-import "os"
-import "p5js"
+// import "jspsych"
+// import "@jspsych/plugin-call-function"
+// import "@jspsych/plugin-fullscreen"
+// import "@jspsych/plugin-html-keyboard-response"
+// import "@jspsych/plugin-image-keyboard-response"
+import "./lib/face-api.js"
+import "./lib/p5.min_mod.js"
 import css from "./styles/main.css";
+
+
+{/* <link rel="preload" href="./js/lib/p5.min_mod.js" as="script"></link>
+<script src="./js/p5setup.js" type="module"></script>
+<script src="./js/p5jsDraw.js" type="module"></script> */}
+
+// import "os"
+
 
 
 
