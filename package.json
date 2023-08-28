@@ -2,7 +2,7 @@
   "name": "deepeyetracker-js",
   "version": "1.0.0",
   "description": "Javascript library for recording eye movement via webcam using Deepeye API",
-  "main": "./src/eyetracker.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,5 +23,13 @@
   "bugs": {
     "url": "https://github.com/lstuurmanVU/deepeyetracker-js/issues"
   },
-  "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme"
+  "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme",
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3"
+  }
 }
