@@ -17,6 +17,7 @@ import "@jspsych/plugin-image-keyboard-response"
 import "face-api.js"
 import "os"
 import "p5js"
+import css from "./styles/main.css";
 
 
 
