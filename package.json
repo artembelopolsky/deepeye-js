@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/eyetracker.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --progress"
+    "build": "webpack --config webpack.config.js --progress --mode=development"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,18 @@
     "@jspsych/plugin-fullscreen": "^1.1.2",
     "@jspsych/plugin-html-keyboard-response": "^1.1.2",
     "@jspsych/plugin-image-keyboard-response": "^1.1.2",
+    "crypto-browserify": "^3.12.0",
     "face-api.js": "^0.22.2",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "http-stream": "^0.1.1",
     "jspsych": "^7.3.2",
-    "p5js": "^1.2.18"
+    "os": "^0.1.2",
+    "p5js": "^1.2.18",
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0",
+    "util": "^0.12.5"
   }
 }

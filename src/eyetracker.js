@@ -9,6 +9,17 @@ import {Dot} from './dot.js'
 import {html as validation_html} from './validation_html.js'
 import {FaceDetection} from './facerecognizer.js';
 
+import "jspsych"
+import "@jspsych/plugin-call-function"
+import "@jspsych/plugin-fullscreen"
+import "@jspsych/plugin-html-keyboard-response"
+import "@jspsych/plugin-image-keyboard-response"
+import "face-api.js"
+import "os"
+import "p5js"
+
+
+
 class EyeTracker {
     /**
      * Class that implements all functionality of eyetracker : 
@@ -37,7 +48,7 @@ class EyeTracker {
         this.type_dataset = 'train';
         this.index_conditions=0;
         this.frameCount=0;
-        this.api_url = "https://deepeye.labs.vu.nl/firebase"
+        this.api_url = "https://deepeye-swarm.psy.vu.nl/firebase"
         this.fullscreen = false;
         this.CALIBRATION_STEPS = ['train', 'test']; // calibrate, then validate    
         
