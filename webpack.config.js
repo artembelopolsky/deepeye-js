@@ -13,6 +13,13 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
     ],
+    loaders: [
+        {
+            test: /\.(png|jpg)$/i,
+            loader: 'file?name=[path][name].[ext]',
+            include: path.resolve(__dirname, 'src/img')
+        },
+    ]
   },
   resolve: {
     extensions: ['.ts', '.js'],
