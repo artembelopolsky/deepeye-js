@@ -17,6 +17,8 @@ import {FaceDetection} from './facerecognizer.js';
 import "./lib/face-api.js"
 import "./lib/p5.min_mod.js"
 import css from "./styles/main.css";
+import 'bootstrap/dist/css/bootstrap.min.css'
+// import "bootstrap-icons"
 
 
 {/* <link rel="preload" href="./js/lib/p5.min_mod.js" as="script"></link>

@@ -1,5 +1,5 @@
 
-import "main.js"
+// import "main.js"
 
 var jsPsych = initJsPsych({     
     on_finish: () => window.location.href = "https://deepeye-swarm.vu.nl/"
