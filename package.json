@@ -1,41 +1,27 @@
 {
-  "name": "calibrationprocedure",
+  "name": "deepeyetracker-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Javascript library for recording eye movement via webcam using Deepeye API",
   "main": "./src/eyetracker.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --progress --mode=development"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lstuurmanVU/deepeyetracker-js.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "eyetracking",
+    "deeplearning",
+    "api",
+    "eye",
+    "movement",
+    "recording"
+  ],
+  "author": "Artem Belopolskiy & Laurens Stuurman",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lstuurmanVU/deepeyetracker-js/issues"
   },
-  "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme",
-  "devDependencies": {
-    "css-loader": "^6.8.1",
-    "style-loader": "^3.3.3",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
-  },
-  "dependencies": {
-    "@jspsych/plugin-call-function": "^1.1.2",
-    "@jspsych/plugin-fullscreen": "^1.1.2",
-    "@jspsych/plugin-html-keyboard-response": "^1.1.2",
-    "@jspsych/plugin-image-keyboard-response": "^1.1.2",
-    "face-api.js": "^0.22.2",
-    "http-stream": "^0.1.1",
-    "jspsych": "^7.3.2",
-    "os": "^0.1.2",
-    "p5js": "^1.2.18",
-    "path-browserify": "^1.0.1",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "url": "^0.11.0"
-  }
+  "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme"
 }
