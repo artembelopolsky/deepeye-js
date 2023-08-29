@@ -18,8 +18,8 @@ import "./lib/face-api.js"
 import "./lib/p5.min_mod.js"
 import css from "./styles/main.css";
 import camera from "./img/camera.jpg"
-import outline from "./img/face_outline.png"
 import 'bootstrap/dist/css/bootstrap.min.css'
+import faceapi from "./lib/face-api.js"
 // import "bootstrap-icons"
 
 
@@ -238,3 +238,4 @@ window.Dot = Dot
 eyetracker.p5setup = p5setup;
 eyetracker.p5draw = draw;
 window.camerapositionpng = camera
+window.faceapi = faceapi;

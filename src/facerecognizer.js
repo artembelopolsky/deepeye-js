@@ -35,12 +35,12 @@ export class FaceDetection {
         this.canvas = document.getElementById("face_detection"); // canvas on which the face detection works
 
         this.getWebcamName() // get default webcam
-        .then(async()=> {         
-            await faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
-          })
-        .then(async()=> {         
-            await faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
-          })
+        // .then(async()=> {         
+        //     await window.faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
+        //   })
+        // .then(async()=> {         
+        //     await window.faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
+        //   })
         .then(this.startVideoAndFaceDetection()) // start webcam followed by face detection
         .catch((err) => {
           console.error(err)
@@ -118,7 +118,7 @@ export class FaceDetection {
   async startFaceDetection() {          
     
     const displaySize = { width: this.parentObject.videoSettings.width, height: this.parentObject.videoSettings.height};
-    faceapi.matchDimensions(this.canvas, displaySize);
+    window.faceapi.matchDimensions(this.canvas, displaySize);
 
     
     if(this.loopIsRunning === false) {
@@ -130,7 +130,7 @@ export class FaceDetection {
 
           try {
             
-            detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+            detections = await window.faceapi.detectAllFaces(video, new window.faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
             this.faceDetected = detections[0].detection.score;
             //faceDetected = detections[0].score;
             // console.log(`FaceDetectionsYES: ${this.faceDetected}`);
@@ -144,7 +144,7 @@ export class FaceDetection {
             let dist_leftEyeBrow = Math.sqrt(Math.pow(left_eye_brow[0]._x - left_eye_brow[4]._x, 2) + Math.pow(left_eye_brow[0]._y - left_eye_brow[4]._y, 2));
             
             // resize detections for plotting            
-            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            const resizedDetections = window.faceapi.resizeResults(detections, displaySize);
             
             // clear the canvas from previous landmarks            
             this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -153,7 +153,7 @@ export class FaceDetection {
             // enable proceed button if face is detected and the both eyebrows are equally long (front face position) and monitor is small
             if(this.faceDetected > 0.5 && (Math.abs(dist_rightEyeBrow - dist_leftEyeBrow) < 10) ) {
                               
-                faceapi.draw.drawDetections(this.canvas, resizedDetections);
+                window.faceapi.draw.drawDetections(this.canvas, resizedDetections);
                 // faceapi.draw.drawFaceLandmarks(this.canvas, resizedDetections);
                 this.canvas.getContext("2d").lineWidth = 20;
                 this.canvas.getContext("2d").strokeStyle="#008000"; // green outer box
