@@ -12,14 +12,28 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(png|jp(e*)g|svg)$/,  
+        use: [{
+            loader: 'url-loader',
+            options: { 
+                // limit: 8000, // Convert images < 8kb to base64 strings
+                name: 'images/[hash]-[name].[ext]'
+            } 
+        }]
+      }
+    //   {
+    //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
+    //     type: 'asset/resource',
+    //   },
     ],
-    loaders: [
-        {
-            test: /\.(png|jpg)$/i,
-            loader: 'file?name=[path][name].[ext]',
-            include: path.resolve(__dirname, 'src/img')
-        },
-    ]
+    // loaders: [
+    //     {
+    //         test: /\.(png|jpg)$/i,
+    //         loader: 'file?name=[path][name].[ext]',
+    //         include: path.resolve(__dirname, 'src/img')
+    //     },
+    // ]
   },
   resolve: {
     extensions: ['.ts', '.js'],
