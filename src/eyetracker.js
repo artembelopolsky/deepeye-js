@@ -21,8 +21,21 @@ import camera from "./img/camera.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import faceapi from "./lib/face-api.js"
 // import * as models from "./models/*"
+
+/*
+
+## idear to get weights in model:
+-bundle model as string
+-in this page save model to browser local storage
+-then load it again from model storage with tf.io.loadWeights(//localstorage:/somepath)
+
+ */
+
+
+
 import tinyface from "./models/tiny_face_detector_model-shard1.bin"
-import { FaceLandmark68Net } from './lib/face-api.js';
+import tinyface_json from "./models/tiny_face_detector_model-weights_manifest.json"
+// import { FaceLandmark68Net } from './lib/face-api.js';
 // import "bootstrap-icons"
 
 
@@ -242,11 +255,11 @@ eyetracker.p5setup = p5setup;
 eyetracker.p5draw = draw;
 window.camerapositionpng = camera
 
-//await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyface); // load model serially
+// await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyface); // load model serially
 
 // await window.faceapi.nets.faceLandmark68Net.loadFromUri(FaceLandmark68Net); // load model serially
 
-window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
+// window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
 
 window.faceapi = faceapi;

@@ -24,7 +24,20 @@ module.exports = {
       },
       {
         test:/\.bin$/i,
-        use:'raw-loader'
+        //use:'raw-loader'
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              encoding: false,
+              mimetype: false,
+              generator: (content) => {
+                return content;
+              }
+            },
+          },
+        ],
       }
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
