@@ -21,6 +21,10 @@ module.exports = {
                 name: 'images/[hash]-[name].[ext]'
             } 
         }]
+      },
+      {
+        test:/\.bin$/i,
+        use:'raw-loader'
       }
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,

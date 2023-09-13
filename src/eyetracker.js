@@ -20,6 +20,9 @@ import css from "./styles/main.css";
 import camera from "./img/camera.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import faceapi from "./lib/face-api.js"
+// import * as models from "./models/*"
+import tinyface from "./models/tiny_face_detector_model-shard1.bin"
+import { FaceLandmark68Net } from './lib/face-api.js';
 // import "bootstrap-icons"
 
 
@@ -238,4 +241,12 @@ window.Dot = Dot
 eyetracker.p5setup = p5setup;
 eyetracker.p5draw = draw;
 window.camerapositionpng = camera
+
+//await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyface); // load model serially
+
+// await window.faceapi.nets.faceLandmark68Net.loadFromUri(FaceLandmark68Net); // load model serially
+
+window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
+
+
 window.faceapi = faceapi;
