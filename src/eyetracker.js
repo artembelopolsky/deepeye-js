@@ -14,12 +14,14 @@ import {FaceDetection} from './facerecognizer.js';
 // import "@jspsych/plugin-fullscreen"
 // import "@jspsych/plugin-html-keyboard-response"
 // import "@jspsych/plugin-image-keyboard-response"
-import "./lib/face-api.js"
+// import "./lib/face-api.js"
 import "./lib/p5.min_mod.js"
 import css from "./styles/main.css";
 import camera from "./img/camera.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import faceapi from "./lib/face-api.js"
+// import faceapi from "./lib/face-api.js"
+import * as faceapi from './lib/face-api.js';
+
 // import * as models from "./models/*"
 
 /*
@@ -27,8 +29,12 @@ import faceapi from "./lib/face-api.js"
 ## idear to get weights in model:
 -bundle model as string
 -in this page save model to browser local storage
--then load it again from model storage with tf.io.loadWeights(//localstorage:/somepath)
+-then load it again from model storage with tf.io.loadWeights(localstorage://somepath)
 
+- update 14-09
+- stupid face api doesn't seem to support loading from local storage. 
+
+https://tensorflow.org/js/guide/save_load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
  */
 
 
@@ -259,7 +265,16 @@ window.camerapositionpng = camera
 
 // await window.faceapi.nets.faceLandmark68Net.loadFromUri(FaceLandmark68Net); // load model serially
 
+
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
+localStorage.setItem('tinyface_detector_model-shard1', tinyface);
+localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
 
+// const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
+
+window.tinyface = tinyface;
+window.tinyface_json = tinyface_json;
 window.faceapi = faceapi;
+
+await faceapi.nets.tinyFaceDetector.loadFromUri('localstorage://');//tinyface_detector_model-shard1

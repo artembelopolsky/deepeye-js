@@ -22,23 +22,27 @@ module.exports = {
             } 
         }]
       },
+      // {
+      //   test:/\.bin$/i,
+      //   //use:'raw-loader'
+      //   exclude: /node_modules/,
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         encoding: false,
+      //         mimetype: false,
+      //         generator: (content) => {
+      //           return content;
+      //         }
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test:/\.bin$/i,
-        //use:'raw-loader'
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              encoding: false,
-              mimetype: false,
-              generator: (content) => {
-                return content;
-              }
-            },
-          },
-        ],
-      }
+        use:["binary-loader"]
+      },
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
     //     type: 'asset/resource',
