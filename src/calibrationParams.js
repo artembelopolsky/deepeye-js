@@ -47,20 +47,20 @@ export var movingDotConfig = {
 }
 
 
-export let FrameDataLog = {
-    frameBase64String: -1,
-    fName: 'SUBJ_NR',
-    timestamp: -1,
-    x: -1,
-    y: -1,
-    dotNr: -1,
-    dotColor: -1,
-    condition: -1,
-    sampTime: -1,
-    corrResp: -1,
-    showArrow: -1,
-    trialNr: -1,
-    respKey: -1,
-    target_type: -1,
-    fullscreen_on: -1
-}
+// export let FrameDataLog = {
+//     frameBase64String: -1,
+//     fName: 'SUBJ_NR',
+//     timestamp: -1,
+//     x: -1,
+//     y: -1,
+//     dotNr: -1,
+//     dotColor: -1,
+//     condition: -1,
+//     sampTime: -1,
+//     corrResp: -1,
+//     showArrow: -1,
+//     trialNr: -1,
+//     respKey: -1,
+//     target_type: -1,
+//     fullscreen_on: -1
+// }

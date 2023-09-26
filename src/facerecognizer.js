@@ -9,14 +9,15 @@ export class FaceDetection {
   constructor(parentObject=null, html){
     this.faceDetected=0;
     this.id_integrated_webcam = '';
-    this.webcam_label;
+    // this.webcam_label;
     this.default_webcam = false;
     this.monitor_changed = false;    
     this.html = html;
     this.parentObject = parentObject;
     this.loopIsRunning = false;
     this.loop;
-    this.devices;
+    this.devices;    
+    this.default_webcamID;
     }
 
   start(){
@@ -35,12 +36,13 @@ export class FaceDetection {
         this.canvas = document.getElementById("face_detection"); // canvas on which the face detection works
 
         this.getWebcamName() // get default webcam
-        // .then(async()=> {         
-        //     await window.faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
-        //   })
-        // .then(async()=> {         
-        //     await window.faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
-        //   })
+        // .then(this.getMaxWebcamRes())
+        .then(async()=> {         
+            await faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
+          })
+        .then(async()=> {         
+            await faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
+          })
         .then(this.startVideoAndFaceDetection()) // start webcam followed by face detection
         .catch((err) => {
           console.error(err)
@@ -83,20 +85,56 @@ export class FaceDetection {
           
           if(this.default_webcam == false && device.kind == 'videoinput') {
             this.default_webcam = device.label;
-            this.webcam_label = this.default_webcam;
-            console.log(`Default webcam is: ${this.default_webcam}`);
+            // this.webcam_label = this.default_webcam;
+            this.default_webcamID = device.deviceId;
+            // console.log(`Default webcam is: ${this.default_webcam}, id:${this.default_webcamID}`);
           }
         });
       });      
   }
+
+  async getMaxWebcamRes() {
+    // try setting webcam to 4K, if not possible, returns the max resolution
+    // currently partially works, but not when two cameras are present
+    navigator.mediaDevices.getUserMedia(
+      { video: { 
+        deviceId: {exact: this.default_webcamID},
+        frameRate: {ideal: 30.0, max: 30.0}, //make sure webcamRate is the same as rate of capture during calibration
+        width: {ideal: 3840},
+        height: {ideal: 2160}
+        }
+      }).then((stream) => {
+          
+      
+      
+      let temp_stream = stream.getVideoTracks()[0].getSettings();
+      console.log(`Maximum webcamRes is: ${temp_stream.width}, ${temp_stream.height}`);
+      
+
+      stream.getTracks().forEach(function(track) {
+        if (track.readyState == 'live') {
+            console.log('Does this get executed??');
+            track.stop();
+        }
+      
+      })
+      stream = null; 
+      
+         
+    });
+      
+   
+  } 
 
 
   async startVideoAndFaceDetection() {  
     
     navigator.mediaDevices.getUserMedia(
       { video: { 
-        deviceId: this.default_webcam,
+        deviceId: {exact: this.default_webcamID},
         frameRate: {ideal: 30.0, max: 30.0}, //make sure webcamRate is the same as rate of capture during calibration
+        width: {ideal: 640},
+        height: {ideal: 480}
         }
       }).then((stream) => {
           
@@ -105,9 +143,12 @@ export class FaceDetection {
       this.parentObject.videoSettings = stream.getVideoTracks()[0].getSettings();
       
       console.log('default webcam in startVideo() : ',this.default_webcam);
+      this.parentObject.system_info.webcamLabel = this.default_webcam;
 
       console.log(`frameRate is: ${this.parentObject.videoSettings.frameRate}`);
       this.parentObject.system_info.webcamFrameRate = this.parentObject.videoSettings.frameRate;
+      // console.log(`webcamRes is: ${this.parentObject.videoSettings.width}, ${this.parentObject.videoSettings.height}`);
+      // console.log('default webcam in startVideo() again : ', this.default_webcamID, this.parentObject.videoSettings.deviceId);
     
       this.startFaceDetection();
       
@@ -118,7 +159,7 @@ export class FaceDetection {
   async startFaceDetection() {          
     
     const displaySize = { width: this.parentObject.videoSettings.width, height: this.parentObject.videoSettings.height};
-    window.faceapi.matchDimensions(this.canvas, displaySize);
+    faceapi.matchDimensions(this.canvas, displaySize);
 
     
     if(this.loopIsRunning === false) {
@@ -130,7 +171,7 @@ export class FaceDetection {
 
           try {
             
-            detections = await window.faceapi.detectAllFaces(video, new window.faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+            detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
             this.faceDetected = detections[0].detection.score;
             //faceDetected = detections[0].score;
             // console.log(`FaceDetectionsYES: ${this.faceDetected}`);
@@ -144,7 +185,7 @@ export class FaceDetection {
             let dist_leftEyeBrow = Math.sqrt(Math.pow(left_eye_brow[0]._x - left_eye_brow[4]._x, 2) + Math.pow(left_eye_brow[0]._y - left_eye_brow[4]._y, 2));
             
             // resize detections for plotting            
-            const resizedDetections = window.faceapi.resizeResults(detections, displaySize);
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
             
             // clear the canvas from previous landmarks            
             this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -153,7 +194,7 @@ export class FaceDetection {
             // enable proceed button if face is detected and the both eyebrows are equally long (front face position) and monitor is small
             if(this.faceDetected > 0.5 && (Math.abs(dist_rightEyeBrow - dist_leftEyeBrow) < 10) ) {
                               
-                window.faceapi.draw.drawDetections(this.canvas, resizedDetections);
+                faceapi.draw.drawDetections(this.canvas, resizedDetections);
                 // faceapi.draw.drawFaceLandmarks(this.canvas, resizedDetections);
                 this.canvas.getContext("2d").lineWidth = 20;
                 this.canvas.getContext("2d").strokeStyle="#008000"; // green outer box
