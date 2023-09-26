@@ -38,10 +38,10 @@ export class FaceDetection {
         this.getWebcamName() // get default webcam
         // .then(this.getMaxWebcamRes())
         .then(async()=> {         
-            await faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
+            await faceapi.nets.tinyFaceDetector.loadFromUri('./deepeyetracker-js/src/models'); // load model serially
           })
         .then(async()=> {         
-            await faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
+            await faceapi.nets.faceLandmark68Net.loadFromUri('./deepeyetracker-js/src/models'); // load model serially
           })
         .then(this.startVideoAndFaceDetection()) // start webcam followed by face detection
         .catch((err) => {

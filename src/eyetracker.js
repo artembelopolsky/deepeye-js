@@ -134,7 +134,7 @@ class EyeTracker {
 
                 const preloadedScript = document.createElement("script");
                 preloadedScript.setAttribute('id', 'preloaded-p5js');               
-                preloadedScript.src = "./js/lib/p5.min_mod.js";       
+                preloadedScript.src = "./deepeyetracker-js/src/lib/p5.min_mod.js";       
                 document.body.appendChild(preloadedScript);
                 
                 //set p5js setup and draw functions to start calibration
