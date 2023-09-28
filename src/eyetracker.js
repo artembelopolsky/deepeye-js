@@ -38,7 +38,7 @@ class EyeTracker {
         this.index_conditions=0;
         this.frameCount=0;
         this.api_url = "https://deepeye-swarm.psy.vu.nl/firebase"; //"https://deepeye.labs.vu.nl/firebase"; 
-        this.api_token = ''; //shoud be set in experiment script
+        this.api_token = ''; //shoud be set in experiment html file
         this.experiment_id = 'Default'; // Default name for experiment, name should be set in experiment script
         this.fullscreen = false;
         this.CALIBRATION_STEPS = ['train', 'test']; // calibrate, then validate    
@@ -105,11 +105,7 @@ class EyeTracker {
             numCalibDots:-1,
             pp_id: -1, // participant id from external platform (e.g. sona)
             event: -1, // event stamp from experiment
-            }
-        // set sona pp id if it is present
-        if(localStorage.getItem('pp_id')){
-            this.FrameDataLog.pp_id = localStorage.getItem('pp_id');
-        }
+            }        
     }
 
     calibrate(done, validationOnly=false, numCalibDots=13, dotDuration=2300, calibrationBackground=255){        
