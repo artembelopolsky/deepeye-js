@@ -38,7 +38,8 @@ class EyeTracker {
         this.index_conditions=0;
         this.frameCount=0;
         this.api_url = "https://deepeye-swarm.psy.vu.nl/firebase"; //"https://deepeye.labs.vu.nl/firebase"; 
-        this.api_token = 'MU5wVTUAO0w1EBVPKYX0euYaGMpalnrRio2nJFyPTdm4NHCsXJbMNPkN3sNc';  //'dHs1XlfeWlM38NCqQHpoaxVjqH3JNkYYwHqpA6FmAg20jy2ba3ZR10hVSeBl';
+        this.api_token = ''; //shoud be set in experiment script
+        this.experiment_id = 'Default'; // Default name for experiment, name should be set in experiment script
         this.fullscreen = false;
         this.CALIBRATION_STEPS = ['train', 'test']; // calibrate, then validate    
         
@@ -219,6 +220,7 @@ class EyeTracker {
             }
         });
     }
+    
 }
 
 console.log('executing eyetracker.js');

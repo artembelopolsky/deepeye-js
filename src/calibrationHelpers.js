@@ -90,7 +90,7 @@ export function uploadData(frame_data, type_dataset='train', final_batch=false) 
 
     var headers = {
         'Content-Type': 'application/json',
-        'experiment-id' : 'Test_MullerLyer', // name of data folder on the server
+        'experiment-id' : eyetracker.experiment_id, // name of experiment and data folder on the server
         'participant-id' : eyetracker.paramHandler.session_timestamp, // participant's session timestamp id
         'type-dataset' : type_dataset, // training or testing calibration dataset
         'final-batch' : eyetracker.final_batch,
