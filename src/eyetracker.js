@@ -218,7 +218,7 @@ class EyeTracker {
                 track.stop();
             }
         });
-  }
+    }
 }
 
 console.log('executing eyetracker.js');
