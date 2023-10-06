@@ -261,20 +261,28 @@ eyetracker.p5setup = p5setup;
 eyetracker.p5draw = draw;
 window.camerapositionpng = camera
 
-// await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyface); // load model serially
+window.faceapi = faceapi;
+
+// New approach (thanks to chatgpt)
+// Create Blob URL to use in load form URI function from 
+
+// Create a Blob from the imported binary data
+const blob = new Blob([tinyface], { type: 'application/octet-stream' });
+const tinyfaceurl = URL.createObjectURL(blob);
+
+await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyfaceurl); // load model serially
 
 // await window.faceapi.nets.faceLandmark68Net.loadFromUri(FaceLandmark68Net); // load model serially
 
 
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
-localStorage.setItem('tinyface_detector_model-shard1', tinyface);
-localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
+// localStorage.setItem('tinyface_detector_model-shard1', tinyface);
+// localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
 
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
 
-window.tinyface = tinyface;
-window.tinyface_json = tinyface_json;
-window.faceapi = faceapi;
+// window.tinyface = tinyface;
+// window.tinyface_json = tinyface_json;
 
-await faceapi.nets.tinyFaceDetector.loadFromUri('localstorage://');//tinyface_detector_model-shard1
+// await faceapi.nets.tinyFaceDetector.loadFromUri('localstorage://');//tinyface_detector_model-shard1
