@@ -1,4 +1,6 @@
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
+
 
 module.exports = {
   entry: './src/eyetracker.js',
@@ -39,10 +41,10 @@ module.exports = {
       //     },
       //   ],
       // },
-      {
-        test:/\.bin$/i,
-        use:["binary-loader"]
-      },
+      // {
+      //   test:/\.bin$/i,
+      //   use:["binary-loader"]
+      // },
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
     //     type: 'asset/resource',
@@ -56,6 +58,13 @@ module.exports = {
     //     },
     // ]
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "src/models/", to: "./models/" },
+      ],
+    }),
+  ],
   resolve: {
     extensions: ['.ts', '.js'],
     fallback: {

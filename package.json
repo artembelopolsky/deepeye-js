@@ -27,6 +27,7 @@
   "homepage": "https://github.com/lstuurmanVU/deepeyetracker-js#readme",
   "devDependencies": {
     "binary-loader": "^0.0.1",
+    "copy-webpack-plugin": "^11.0.0",
     "file-loader": "^6.2.0",
     "json-loader": "^0.5.7",
     "raw-loader": "^4.0.2",
