@@ -263,6 +263,8 @@ window.camerapositionpng = camera
 
 window.faceapi = faceapi;
 
+
+
 // New approach (thanks to chatgpt)
 // Create Blob URL to use in load form URI function from 
 
@@ -270,7 +272,7 @@ window.faceapi = faceapi;
 // const blob = new Blob([tinyface], { type: 'application/octet-stream' });
 // const tinyfaceurl = URL.createObjectURL(blob);
 
-// await window.faceapi.nets.tinyFaceDetector.loadFromUri(tinyfaceurl); // load model serially
+// await window.faceapi.nets.tinyFaceDetector.loadFromUri('https://deepeye.labs.vu.nl/resources/'); // load model serially
 
 // await window.faceapi.nets.faceLandmark68Net.loadFromUri(FaceLandmark68Net); // load model serially
 
