@@ -310,7 +310,7 @@ export function plotValidationResults(headers, requestData) {
         if(json['b64image'].includes("data:image/jpg;base64,") ) {
             
             let meanError =  parseFloat(json['mean_err']);
-            let stdError = parseFloat(json['std_err']);                   
+            let maxError = parseFloat(json['max_err']);                   
 
             eyetracker.done_validation = true;
             background(255); // set to white
@@ -336,7 +336,7 @@ export function plotValidationResults(headers, requestData) {
             if(eyetracker.demoMode == false) {
                 let textNode1, textNode2;
                 if(document.getElementById("accept-button")) {            
-                    if(meanError <= eyetracker.validationThreshold) {                   
+                    if(meanError <= eyetracker.validationThreshold && maxError <= eyetracker.validationThreshold*1.5) {                   
                         document.getElementById("accept-button").disabled = false;
                         document.getElementById("recalibrate-button").disabled = true;
                     }
@@ -386,7 +386,8 @@ export function plotValidationResults(headers, requestData) {
                 
                 // end study after max unsuccessful recalibration attempts
                 // Check the condition first
-                if (eyetracker.demoMode === false && (eyetracker.numCalibrationAttempts + 1) === eyetracker.maxCalibrationAttempts && meanError > eyetracker.validationThreshold) {
+                if (eyetracker.demoMode === false && (eyetracker.numCalibrationAttempts + 1) === eyetracker.maxCalibrationAttempts
+                     && (meanError > eyetracker.validationThreshold ||  maxError > eyetracker.validationThreshold*1.5)) {
                     // If the condition is met, call jatos.endStudy() and exit the code
                     jatos.endStudy();
                     return; // Exit the event listener function
