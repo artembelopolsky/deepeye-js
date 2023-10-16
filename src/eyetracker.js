@@ -39,8 +39,8 @@ https://tensorflow.org/js/guide/save_loadghp_zaLvaabNN0v7FplKyH0gXcqevE8LoR0PxW6
 
 
 
-// import tinyface from "./models/tiny_face_detector_model-shard1.bin"
-// import tinyface_json from "./models/tiny_face_detector_model-weights_manifest.json"
+import tinyface from "./models/tiny_face_detector_model-shard1.bin"
+import tinyface_json from "./models/tiny_face_detector_model-weights_manifest.json"
 // import { FaceLandmark68Net } from './lib/face-api.js';
 // import "bootstrap-icons"
 
@@ -279,8 +279,8 @@ window.faceapi = faceapi;
 
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
-// localStorage.setItem('tinyface_detector_model-shard1', tinyface);
-// localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
+localStorage.setItem('tinyface_detector_model-shard1', tinyface);
+localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
 
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
 

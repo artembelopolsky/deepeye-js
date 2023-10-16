@@ -26,7 +26,7 @@ module.exports = {
       },
       // {
       //   test:/\.bin$/i,
-      //   //use:'raw-loader'
+      //   // use:'raw-loader',
       //   exclude: /node_modules/,
       //   use: [
       //     {
@@ -41,10 +41,10 @@ module.exports = {
       //     },
       //   ],
       // },
-      // {
-      //   test:/\.bin$/i,
-      //   use:["binary-loader"]
-      // },
+      {
+        test:/\.bin$/i,
+        use:["binary-loader"]
+      },
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
     //     type: 'asset/resource',
@@ -72,6 +72,7 @@ module.exports = {
         "util": false,
         "node-fetch":false,
         "fs":false,
+        "buffer": false
     }
   },
 };
