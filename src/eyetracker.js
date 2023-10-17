@@ -21,7 +21,7 @@ import camera from "./img/camera.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import faceapi from "./lib/face-api.js"
 import * as faceapi from './lib/face-api.js';
-
+import * as tf from '@tensorflow/tfjs';
 // import * as models from "./models/*"
 
 /*
@@ -39,8 +39,8 @@ https://tensorflow.org/js/guide/save_loadghp_zaLvaabNN0v7FplKyH0gXcqevE8LoR0PxW6
 
 
 
-import tinyface from "./models/tiny_face_detector_model-shard1.bin"
-import tinyface_json from "./models/tiny_face_detector_model-weights_manifest.json"
+import tinyfaceFileString from "./models/tiny_face_detector_model-shard1.bin"
+import tinyfaceJson from "./models/tiny_face_detector_model-weights_manifest.json"
 // import { FaceLandmark68Net } from './lib/face-api.js';
 // import "bootstrap-icons"
 
@@ -268,13 +268,25 @@ window.camerapositionpng = camera
 
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
-localStorage.setItem('tinyface_detector_model-shard1', tinyface);
-localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyface_json));
+localStorage.setItem('tinyface_detector_model-shard1', tinyfaceBinary);
+localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyfaceJson));
 
+var tinyfaceBinary = atob(tinyfaceFileString);
+
+
+var uint8Array = new Uint8Array(tinyfaceBinary.length);
+for (var i = 0; i < tinyfaceBinary.length; i++) {
+    uint8Array[i] = tinyfaceBinary.charCodeAt(i);
+}
+
+const tinyfaceFromBinary = await tf.loadLayersModel(tf.io.browserFiles([{
+    name: 'model',
+    data: uint8Array.buffer
+}]));
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
-
+faceapi.nets.tinyFaceDetector = tinyfaceFromBinary
 window.tinyface = tinyface;
-window.tinyface_json = tinyface_json;
+window.tinyface_json = tinyfaceJson;
 window.faceapi = faceapi;
 
-await faceapi.nets.tinyFaceDetector.loadFromUri('localstorage://');//tinyface_detector_model-shard1
+// await faceapi.nets.tinyFaceDetector.loadFromDisk('localstorage://');//tinyface_detector_model-shard1
