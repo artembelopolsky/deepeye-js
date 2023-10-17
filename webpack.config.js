@@ -73,6 +73,10 @@ module.exports = {
         "node-fetch":false,
         "fs":false,
         "buffer": false
-    }
+    },
+    modules:[
+      'node_modules'
+    ]
+
   },
 };
