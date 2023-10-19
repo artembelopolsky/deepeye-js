@@ -37,11 +37,11 @@ export class FaceDetection {
         this.getWebcamName() // get default webcam
         .then(async()=> {         
             //await window.faceapi.nets.tinyFaceDetector.loadFromUri('js/models'); // load model serially
-            await window.faceapi.nets.tinyFaceDetector.loadFromUri('./resources/models'); // load model serially
+            await window.faceapi.nets.tinyFaceDetector.loadFromUri('https://deepeye.labs.vu.nl/resources/models'); // load model serially
           })
         .then(async()=> {         
             // await window.faceapi.nets.faceLandmark68Net.loadFromUri('js/models'); // load model serially
-            await window.faceapi.nets.faceLandmark68Net.loadFromUri('./resources/models'); // load model serially
+            await window.faceapi.nets.faceLandmark68Net.loadFromUri('https://deepeye.labs.vu.nl/resources/models'); // load model serially
 
           })
         .then(this.startVideoAndFaceDetection()) // start webcam followed by face detection
