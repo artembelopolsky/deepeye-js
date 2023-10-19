@@ -24,5 +24,6 @@ faceapi.env.monkeyPatch({ fetch: fetch });
 await faceapi.nets.tinyFaceDetector.loadFromDisk('../src/models').then(async()=> {
     getMethods = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
     console.log(getMethods(faceapi.nets.tinyFaceDetector))
+    
     const saveResult = await faceapi.nets.tinyFaceDetector.save('file://testmodel/test');
 })

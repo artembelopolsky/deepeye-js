@@ -28,8 +28,8 @@
   "devDependencies": {
     "@tensorflow/tfjs-node": "^4.11.0",
     "binary-loader": "^0.0.1",
-    "copy-webpack-plugin": "^11.0.0",
     "canvas": "^2.11.2",
+    "copy-webpack-plugin": "^11.0.0",
     "face-api.js": "^0.22.2",
     "file-loader": "^6.2.0",
     "json-loader": "^0.5.7",

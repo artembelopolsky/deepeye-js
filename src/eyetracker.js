@@ -279,25 +279,31 @@ window.faceapi = faceapi;
 
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
-localStorage.setItem('tinyface_detector_model-shard1', tinyfaceBinary);
+console.log(tinyfaceFileString)
+
+localStorage.setItem('tinyface_detector_model-shard1', tinyfaceFileString);
 localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyfaceJson));
+window.faceapi = faceapi;
+window.tf = tf
+// const model = await tf.loadLayersModel('localstorage://tinyface_detector_model');
 
-var tinyfaceBinary = atob(tinyfaceFileString);
+
+// var tinyfaceBinary = atob(tinyfaceFileString);
 
 
-var uint8Array = new Uint8Array(tinyfaceBinary.length);
-for (var i = 0; i < tinyfaceBinary.length; i++) {
-    uint8Array[i] = tinyfaceBinary.charCodeAt(i);
-}
+// var uint8Array = new Uint8Array(tinyfaceBinary.length);
+// for (var i = 0; i < tinyfaceBinary.length; i++) {
+//     uint8Array[i] = tinyfaceBinary.charCodeAt(i);
+// }
 
-const tinyfaceFromBinary = await tf.loadLayersModel(tf.io.browserFiles([{
-    name: 'model',
-    data: uint8Array.buffer
-}]));
+// const tinyfaceFromBinary = await tf.loadLayersModel(tf.io.browserFiles([{
+//     name: 'model',
+//     data: uint8Array.buffer
+// }]));
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
 faceapi.nets.tinyFaceDetector = tinyfaceFromBinary
 window.tinyface = tinyface;
 window.tinyface_json = tinyfaceJson;
 window.faceapi = faceapi;
-
+window.tf = tf
 // await faceapi.nets.tinyFaceDetector.loadFromDisk('localstorage://');//tinyface_detector_model-shard1
