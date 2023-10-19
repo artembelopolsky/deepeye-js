@@ -41,10 +41,10 @@ module.exports = {
       //     },
       //   ],
       // },
-      {
-        test:/\.bin$/i,
-        use:["binary-loader"]
-      },
+      // {
+      //   test:/\.bin$/i,
+      //   use:["binary-loader"]
+      // },
     //   {
     //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
     //     type: 'asset/resource',

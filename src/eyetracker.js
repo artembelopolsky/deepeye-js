@@ -41,8 +41,8 @@ https://tensorflow.org/js/guide/save_loadghp_zaLvaabNN0v7FplKyH0gXcqevE8LoR0PxW6
 
 
 
-import tinyfaceFileString from "./models/tiny_face_detector_model-shard1.bin"
-import tinyfaceJson from "./models/tiny_face_detector_model-weights_manifest.json"
+// import tinyfaceFileString from "./models/tiny_face_detector_model-shard1.bin"
+// import tinyfaceJson from "./models/tiny_face_detector_model-weights_manifest.json"
 // import { FaceLandmark68Net } from './lib/face-api.js';
 // import "bootstrap-icons"
 
