@@ -22,6 +22,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 // import faceapi from "./lib/face-api.js"
 import * as faceapi from './lib/face-api.js';
 import * as tf from '@tensorflow/tfjs';
+// import 'p5';
+
 // import * as models from "./models/*"
 
 /*
@@ -262,6 +264,7 @@ eyetracker.p5draw = draw;
 window.camerapositionpng = camera
 
 window.faceapi = faceapi;
+window.tf = tf
 
 
 
@@ -279,12 +282,11 @@ window.faceapi = faceapi;
 
 // window.faceapi.nets.faceLandmark68Net = FaceLandmark68Net; // load model serially
 
-console.log(tinyfaceFileString)
+// console.log(tinyfaceFileString)
 
-localStorage.setItem('tinyface_detector_model-shard1', tinyfaceFileString);
-localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyfaceJson));
-window.faceapi = faceapi;
-window.tf = tf
+// localStorage.setItem('tinyface_detector_model-shard1', tinyfaceFileString);
+// localStorage.setItem('tinyface_detector_model-weights_manifest.json', JSON.stringify(tinyfaceJson));
+// window.faceapi = faceapi;
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model');
 
 
@@ -301,9 +303,9 @@ window.tf = tf
 //     data: uint8Array.buffer
 // }]));
 // const model = await tf.loadLayersModel('localstorage://tinyface_detector_model-shard1');
-faceapi.nets.tinyFaceDetector = tinyfaceFromBinary
-window.tinyface = tinyface;
-window.tinyface_json = tinyfaceJson;
-window.faceapi = faceapi;
-window.tf = tf
+// faceapi.nets.tinyFaceDetector = tinyfaceFromBinary
+// window.tinyface = tinyface;
+// window.tinyface_json = tinyfaceJson;
+// window.faceapi = faceapi;
+// window.tf = tf
 // await faceapi.nets.tinyFaceDetector.loadFromDisk('localstorage://');//tinyface_detector_model-shard1
