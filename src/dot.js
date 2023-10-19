@@ -30,82 +30,160 @@ export class Dot {
         delayWebcamCapture: 800 // time between dot presentation and start of frame capture
       }
       
-      // start with 5 dots as a plus in the center
+      let smallStep = 0.1;
+      let largeStep = 0.3;
+
+      // ORIGINAL: start with 5 dots as a plus in the center
+      // this.LOCATIONS = [
+      //   //{x: window.screen.width/2, y: window.screen.height/2}, // center center is defined in p5setup.js        
+      //   {x: 0 + this.config.dot_diam_max, y: window.screen.height/2}, // center left
+      //   {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height/2}, // center right    
+      //   {x: window.screen.width/2, y: 0 + this.config.dot_diam_max}, // top center  
+      //   {x: window.screen.width/2, y: window.screen.height - this.config.dot_diam_max} // bottom center  
+      // ];
+
+      // AS % of screen: start with 5 dots as a plus in the center
       this.LOCATIONS = [
         //{x: window.screen.width/2, y: window.screen.height/2}, // center center is defined in p5setup.js        
-        {x: 0 + this.config.dot_diam_max, y: window.screen.height/2}, // center left
-        {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height/2}, // center right    
-        {x: window.screen.width/2, y: 0 + this.config.dot_diam_max}, // top center  
-        {x: window.screen.width/2, y: window.screen.height - this.config.dot_diam_max} // bottom center  
+        {x: 0 + window.screen.width*smallStep, y: window.screen.height/2}, // center left
+        {x: window.screen.width - window.screen.width*smallStep, y: window.screen.height/2}, // center right    
+        {x: window.screen.width/2, y: 0 + window.screen.height*smallStep}, // top center  
+        {x: window.screen.width/2, y: window.screen.height - window.screen.height*smallStep} // bottom center  
       ];
 
-       // add 4 more dots till 9
+      // ORIGINAL: add 4 more dots till 9
+      // if (this.config.total_dots == 9) {
+      //   this.LOCATIONS.push(      
+      //     {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
+      //     {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max} // bottom right
+      //   );
+      // }
+
+      // AS % of screen: add 4 more dots till 9      
       if (this.config.total_dots == 9) {
         this.LOCATIONS.push(      
-          {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
-          {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
-          {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
-          {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max} // bottom right
+          {x: 0 + window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top left          
+          {x: window.screen.width - window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top right          
+          {x: 0 + window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep}, // bottom left          
+          {x: window.screen.width - window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep} // bottom right
         );
-      }
+      }      
 
-      // add 8 more dots till 13
+      // // ORIGINAL: add 8 more dots till 13
+      // else if (this.config.total_dots == 13) {
+      //   this.LOCATIONS.push(
+
+      //     // add 4 more dots till 9
+      //     {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
+      //     {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom right
+         
+      //     // add 4 more dots till 13
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top left of extra 4 dots
+      //     {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top right of extra 4 dots
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom left of extra 4 dots
+      //     {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom right of extra 4 dots
+      //   );
+      // }
+
+      // AS % of screen: add 8 more dots till 13
       else if (this.config.total_dots == 13) {
         this.LOCATIONS.push(
 
           // add 4 more dots till 9
-          {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
-          {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
-          {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
-          {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom right
+          {x: 0 + window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top left          
+          {x: window.screen.width - window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top right          
+          {x: 0 + window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep}, // bottom left          
+          {x: window.screen.width - window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep}, // bottom right
          
           // add 4 more dots till 13
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top left of extra 4 dots
-          {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top right of extra 4 dots
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom left of extra 4 dots
-          {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom right of extra 4 dots
+          {x:  0 + window.screen.width*largeStep, y: 0 + window.screen.height*largeStep}, // top left of extra 4 dots
+          {x: window.screen.width - window.screen.width*largeStep, y: 0 + window.screen.height*largeStep}, // top right of extra 4 dots
+          {x: 0 + window.screen.width*largeStep, y: window.screen.height - window.screen.height*largeStep}, // bottom left of extra 4 dots
+          {x: window.screen.width - window.screen.width*largeStep, y: window.screen.height - window.screen.height*largeStep}, // bottom right of extra 4 dots
         );
-      }
+      }     
 
-      // add 20 more dots
+      // ORIGINAL: add 20 more dots
+      // else if (this.config.total_dots == 25) {
+      //   this.LOCATIONS.push(
+
+      //      // add 4 more dots till 9
+      //      {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
+      //      {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
+      //      {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
+      //      {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom right            
+          
+      //     // add 4 more dots till 13
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top left of extra 4 dots
+      //     {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top right of extra 4 dots
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom left of extra 4 dots
+      //     {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom right of extra 4 dots
+
+      //     // add 12 more dots till 25
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top row, second from the left 
+      //     {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top row, second from the right
+
+      //     {x:  0 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, left 
+      //     {x: window.screen.width/2, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, center 
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, right
+
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/2}, // center row, second from the left 
+      //     {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: window.screen.height/2}, // center row, second from the right
+
+      //     {x:  0 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, left 
+      //     {x: window.screen.width/2, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, center 
+      //     {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, right
+
+      //     {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom row, second from the left 
+      //     {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max} // bottom row, second from the right
+          
+      //   );
+      // }
+
+      // AS % of screen: add 20 more dots
       else if (this.config.total_dots == 25) {
         this.LOCATIONS.push(
 
-           // add 4 more dots till 9
-           {x: 0 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top left          
-           {x:  window.screen.width - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top right          
-           {x: 0 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom left          
-           {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom right            
-          
+           
+          // add 4 more dots till 9
+          {x: 0 + window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top left          
+          {x: window.screen.width - window.screen.width*smallStep, y: 0 + window.screen.height*smallStep}, // top right          
+          {x: 0 + window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep}, // bottom left          
+          {x: window.screen.width - window.screen.width*smallStep, y: window.screen.height - window.screen.height*smallStep}, // bottom right
+         
           // add 4 more dots till 13
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top left of extra 4 dots
-          {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // top right of extra 4 dots
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom left of extra 4 dots
-          {x:  window.screen.width - window.screen.width/4  - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // bottom right of extra 4 dots
+          {x: 0 + window.screen.width*largeStep, y: 0 + window.screen.height*largeStep}, // top left of extra 4 dots
+          {x: window.screen.width - window.screen.width*largeStep, y: 0 + window.screen.height*largeStep}, // top right of extra 4 dots
+          {x: 0 + window.screen.width*largeStep, y: window.screen.height - window.screen.height*largeStep}, // bottom left of extra 4 dots
+          {x: window.screen.width - window.screen.width*largeStep, y: window.screen.height - window.screen.height*largeStep}, // bottom right of extra 4 dots
 
           // add 12 more dots till 25
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top row, second from the left 
-          {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: 0 + this.config.dot_diam_max}, // top row, second from the right
+          {x: 0 + window.screen.width*largeStep, y: 0 + window.screen.height*smallStep}, // top row, second from the left 
+          {x: window.screen.width - window.screen.width*largeStep, y: 0 + window.screen.height*smallStep}, // top row, second from the right
 
-          {x:  0 + this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, left 
-          {x: window.screen.width/2, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, center 
-          {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height/4 + this.config.dot_diam_max}, // second row from top, right
+          {x: 0 + window.screen.width*smallStep, y: 0 + window.screen.height*largeStep}, // second row from top, left 
+          {x: window.screen.width/2, y: 0 + window.screen.height*largeStep}, // second row from top, center 
+          {x: window.screen.width - window.screen.width*smallStep, y: 0 + window.screen.height*largeStep}, // second row from top, right
 
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height/2}, // center row, second from the left 
-          {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: window.screen.height/2}, // center row, second from the right
+          {x: 0 + window.screen.width*largeStep, y: window.screen.height/2}, // center row, second from the left 
+          {x: window.screen.width - window.screen.width*largeStep, y: window.screen.height/2}, // center row, second from the right
 
-          {x:  0 + this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, left 
-          {x: window.screen.width/2, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, center 
-          {x:  window.screen.width - this.config.dot_diam_max, y: window.screen.height - window.screen.height/4 - this.config.dot_diam_max}, // fourth row from top, right
+          {x: 0 + window.screen.width*smallStep, y: window.screen.height - window.screen.height*largeStep}, // fourth row from top, left 
+          {x: window.screen.width/2, y: window.screen.height - window.screen.height*largeStep}, // fourth row from top, center 
+          {x: window.screen.width - window.screen.width*smallStep, y: window.screen.height - window.screen.height*largeStep}, // fourth row from top, right
 
-          {x:  window.screen.width/4 + this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max}, // bottom row, second from the left 
-          {x:  window.screen.width - window.screen.width/4 - this.config.dot_diam_max, y: window.screen.height - this.config.dot_diam_max} // bottom row, second from the right
+          {x:  0 + window.screen.width*largeStep, y: window.screen.height - window.screen.height*smallStep}, // bottom row, second from the left 
+          {x:  window.screen.width - window.screen.width*largeStep, y: window.screen.height - window.screen.height*smallStep} // bottom row, second from the right
           
         );
       }
 
       else if(this.config.total_dots != 5 && this.config.total_dots != 9 && this.config.total_dots != 13 && this.config.total_dots != 25) {
-          throw new Error('Wrong number of calibration dots: use only 3, 9 or 13');
+          throw new Error('Wrong number of calibration dots: use only 5, 9, 13 or 25');
       }
     }
   

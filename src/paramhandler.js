@@ -17,7 +17,7 @@ export class ParamHandler{
 
         this.scale = 1/devicePixelRatio;
         this.fontSize = 20.0;
-        this.devicePixelRatio;
+        // this.devicePixelRatio;
         this.dpi_x;
         this.dpi_y;
         // Webcam position : 
@@ -27,7 +27,7 @@ export class ParamHandler{
     }
 
     setHTML(){
-      
+
         // hide present body element
         var initial_content = document.getElementsByTagName('body')[0];
         for (const child of initial_content.children) child.style.display = 'none';
@@ -39,8 +39,6 @@ export class ParamHandler{
         var div = document.createElement('setup-screen');
         document.body.appendChild(div);
         div.innerHTML = this.html;
-        var imgtag = document.getElementById('webcam-position')
-        imgtag.src = window.camerapositionpng;
 
         // // add button
         // var x = document.createElement("BUTTON");
@@ -61,7 +59,7 @@ export class ParamHandler{
     }
 
     initial_estimate(){
-        this.devicePixelRatio = window.devicePixelRatio || 1;
+        // this.devicePixelRatio = window.devicePixelRatio || 1;
         //devicePixelRatio = 1;
         this.dpi_x = Math.round(document.getElementById('testdiv').offsetWidth * devicePixelRatio);
         this.dpi_y = Math.round(document.getElementById('testdiv').offsetHeight * devicePixelRatio);
@@ -72,50 +70,65 @@ export class ParamHandler{
         this.loop = setInterval(() => {
             let zoom_level_ok = this.check_zoom_level();
             this.computeDisplaySize();
-        
-            if(zoom_level_ok==false) {
+
             document.getElementById("proceed_button").disabled = false; // enable button to proceed
-            }
-            else {
-            document.getElementById("proceed_button").disabled = true; // disable button
-            }
+        
+            // if(zoom_level_ok==false) {
+            // document.getElementById("proceed_button").disabled = false; // enable button to proceed
+            // }
+            // else {
+            // document.getElementById("proceed_button").disabled = true; // disable button
+            // }
         
         }, 1000)
     }
 
     computeDisplaySize(){
-        // get the credit card element
-        var card = document.getElementById('cc');
-    
-        // get the size of credit card in pixels
-        var cardpx = card.clientWidth;
-    
-        // 96 is the DPI value for standard displays
-        // devicePixelRatio - A value of 1 indicates a classic 96 DPI (76 DPI on some platforms) display, while a value of 2 is expected for HiDPI/Retina displays
-        // scale by how much the size of credit card is increased/decreased.
-        var cardcm = (cardpx / (devicePixelRatio * 96) / this.scale) * 2.54;
-        this.width_cm = (cardcm / cardpx) * screen.width;
-        this.width_in_inch = this.width_cm /  2.54;
-        //update UI
-        document.getElementById('width').innerHTML = this.width_cm.toFixed(2);
-        document.getElementById('width_inch').innerHTML = this.width_in_inch.toFixed(2);
-        this.resWidth = screen.width;
-        this.resHeight = screen.height;
-        document.getElementById('resWidth').innerHTML = this.resWidth;
-        document.getElementById('resHeight').innerHTML = this.resHeight;
+
+      // this.scale = 1/devicePixelRatio;
+      // get the credit card element
+      var card = document.getElementById('cc');
+  
+      // get the size of credit card in pixels
+      var cardpx = card.clientWidth;
+  
+      // 96 is the DPI value for standard displays
+      // devicePixelRatio - A value of 1 indicates a classic 96 DPI (76 DPI on some platforms) display, while a value of 2 or 3 is expected for HiDPI/Retina displays
+      // in a browser, true devicePixelRatio seems to be 1 even for retina displays
+      // scale by how much the size of credit card is increased/decreased.       
+      // console.log('devicepixelratio:', devicePixelRatio);
+      // console.log('cardpx:', cardpx);      
+      // console.log('screen.width, screen.height:', screen.width, screen.height);
+
+      // var cardcm = (cardpx / (devicePixelRatio * 96) / this.scale) * 2.54; 
+      var cardcm = 8.5;
+      // console.log('cardcm:', cardcm);
+      this.width_cm = (cardcm / cardpx) * screen.width;
+      this.width_in_inch = this.width_cm /  2.54;
+      //update UI
+      document.getElementById('width').innerHTML = this.width_cm.toFixed(2);
+      document.getElementById('width_inch').innerHTML = this.width_in_inch.toFixed(2);
+      this.resWidth = screen.width;
+      this.resHeight = screen.height;
+      document.getElementById('resWidth').innerHTML = this.resWidth;
+      document.getElementById('resHeight').innerHTML = this.resHeight;
     }
     
+       
     check_zoom_level(){
-        let zoom = ((window.outerWidth - 10) / window.innerWidth) * 100;
-    
-        if(zoom < 98 || zoom > 101) {
-          document.getElementById('zoom_level_warning').innerHTML = 'Please adjust your zoom level to 100%';
-          return true;
-        }
-        else {
-          document.getElementById('zoom_level_warning').innerHTML = '';
-          return false;
-        }
+
+      var zoomLevel = window.devicePixelRatio || 1;
+      // console.log("Zoom Level: " + zoomLevel);      
+
+      // check if zoom level is an integer which likely means it is 100%      
+      if(Number.isInteger(zoomLevel) == false) {
+        document.getElementById('zoom_level_warning').innerHTML = 'Your zoom level might not be 100%. Please check';
+        return true;
+      }
+      else {
+        document.getElementById('zoom_level_warning').innerHTML = '';
+        return false;
+      }
     }
 
     resizeCC(mult) {

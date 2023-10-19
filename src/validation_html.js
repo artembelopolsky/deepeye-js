@@ -5,7 +5,7 @@ export var html = `
   <div class="justify-content-center">
           <div class="card o-hidden border-0 shadow-lg my-2 h-100">
               <div class="">
-                  <img class="card-img img-responsive" id="result-image" src=""></img>
+                  <img class="card-img img-responsive" style="width: 85%; height: 85%" id="result-image" src=""></img>
                   <div class="my-2"></div>
               </div>
               <div class="align-items-center d-flex justify-content-center p-0">
