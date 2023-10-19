@@ -47,6 +47,8 @@ export function captureFrames(metaData) {
             showArrow: metaData.showArrow,
             target_type: metaData.target_type,
             respKey: metaData.respKey,
+            respTime: metaData.respTime,
+            mouseXY: metaData.mouseXY,
             corrResp: metaData.corrResp,
             fullscreen_on: metaData.fullscreen_on,
             // webcam_label: localStorage.getItem("label_webcam"),
@@ -59,7 +61,7 @@ export function captureFrames(metaData) {
         // when running an experiment (and not calibration)
         if(metaData.userLogVariables != -1){
             // delete the variables left over from calibration
-            var dropVariables = ['x','y','dotNr','dotColor','showArrow','target_type','respKey','corrResp', 'fullscreen_on','numCalibDots'];
+            var dropVariables = ['x','y','dotNr','dotColor','showArrow','target_type','corrResp', 'fullscreen_on','numCalibDots'];
             for(let index in dropVariables){ delete imageInstance[dropVariables[index]]; }
 
             // save userLogVariables specific to experiment (from jsPsych)
