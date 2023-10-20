@@ -523,3 +523,29 @@ export function next_condition() {
 export function randomChoice(arr) {
     return arr[Math.floor(arr.length * Math.random())];
 }
+
+
+export async function testDownloadSpeed() {
+    var startTime, endTime;
+    startTime = (new Date()).getTime();
+
+    try {
+        const response = await fetch(eyetracker.api_url + "/testspeed");
+        const data = await response.text();
+
+        endTime = (new Date()).getTime();
+        var duration = (endTime - startTime) / 1000;
+        var bitsLoaded =  1073741824 * 8;
+        var speedBps = (bitsLoaded / duration).toFixed(2);
+        var speedKbps = (speedBps / 1024).toFixed(2);
+        var speedMbps = (speedKbps / 1024).toFixed(2);
+        
+        console.log(`Your connection speed is: 
+          ${speedBps} bps
+          ${speedKbps} kbps
+          ${speedMbps} Mbps`);
+        return speedBps,speedKbps,speedMbps
+    } catch (error) {
+        console.log(`Error fetching file: ${error}`);
+    }
+}

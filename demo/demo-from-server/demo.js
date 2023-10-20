@@ -15,7 +15,9 @@ var jsPsych = initJsPsych({
       async: true,
       func: function(done){
 
+        eyetracker.api_token = 'B79QS8X5hI77bcUKvyt57vcVtpDfvrXRcR4mDU04iDp2v47lZmN506SPOPJ9';
         eyetracker.setup(done);
+        window.helpers.testDownloadSpeed()
         
         
       }

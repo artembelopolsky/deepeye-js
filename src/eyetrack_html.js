@@ -112,7 +112,7 @@ export var html = `
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7 text-right">
-                <img src="deepeyetracker-js/src/img/camera.jpg" class="rounded img-fluid w-50 p-3" alt="...">
+                <img id="webcam-position" class="rounded img-fluid w-50 p-3" alt="...">
             </div>
             <div class="col-md-5 mt-5">
                 <div class="form-row mt-5">

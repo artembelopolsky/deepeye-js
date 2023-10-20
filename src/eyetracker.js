@@ -15,13 +15,13 @@ import {FaceDetection} from './facerecognizer.js';
 // import "@jspsych/plugin-html-keyboard-response"
 // import "@jspsych/plugin-image-keyboard-response"
 // import "./lib/face-api.js"
-import "./lib/p5.min_mod.js"
+// import "./lib/p5.min_mod.js"
 import css from "./styles/main.css";
 import camera from "./img/camera.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import faceapi from "./lib/face-api.js"
 import * as faceapi from './lib/face-api.js';
-import * as tf from '@tensorflow/tfjs';
+// import * as tf from '@tensorflow/tfjs';
 // import 'p5';
 
 // import * as models from "./models/*"
@@ -234,9 +234,6 @@ class EyeTracker {
                 
             }
         }, 33.33)
-
-        
-        
         
     }
 
@@ -278,7 +275,6 @@ eyetracker.p5draw = draw;
 window.camerapositionpng = camera
 
 window.faceapi = faceapi;
-window.tf = tf
 
 
 

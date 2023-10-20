@@ -39,6 +39,8 @@ export class ParamHandler{
         var div = document.createElement('setup-screen');
         document.body.appendChild(div);
         div.innerHTML = this.html;
+        var imgtag = document.getElementById('webcam-position')
+        imgtag.src = window.camerapositionpng;
 
         // // add button
         // var x = document.createElement("BUTTON");
