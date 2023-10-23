@@ -5,7 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: './src/eyetracker.js',
   output: {
-    filename: 'main.js',
+    filename: 'deepeyetracker.js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
