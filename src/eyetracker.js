@@ -104,7 +104,7 @@ class EyeTracker {
         this.countErrRespRecording = 0; // count how many batches returned an error during /record request
 
         this.detections;
-        this.numCalibDots = 13;
+        this.numCalibDots = 9;
         this.numCalibrationAttempts = 0;
         this.maxCalibrationAttempts = 3; 
         this.validationThreshold = 3.0; // threshold needed to accept validation result

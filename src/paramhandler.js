@@ -73,14 +73,14 @@ export class ParamHandler{
             let zoom_level_ok = this.check_zoom_level();
             this.computeDisplaySize();
 
-            document.getElementById("proceed_button").disabled = false; // enable button to proceed
-        
-            // if(zoom_level_ok==false) {
             // document.getElementById("proceed_button").disabled = false; // enable button to proceed
-            // }
-            // else {
-            // document.getElementById("proceed_button").disabled = true; // disable button
-            // }
+        
+            if(zoom_level_ok==false) {
+            document.getElementById("proceed_button").disabled = false; // enable button to proceed
+            }
+            else {
+            document.getElementById("proceed_button").disabled = true; // disable button
+            }
         
         }, 1000)
     }
