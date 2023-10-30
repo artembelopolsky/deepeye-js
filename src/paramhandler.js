@@ -22,11 +22,12 @@ export class ParamHandler{
         this.dpi_y;
         // Webcam position : 
         this.verticalDist;
+        this.speedMbps = null;
 
         this.session_timestamp = new Date().toISOString().replace(/[T:-]/g, '_').replace(/\..+/, ''); //format timestamp, use as participant_id
     }
 
-    setHTML(){
+    async setHTML(){
 
         // hide present body element
         var initial_content = document.getElementsByTagName('body')[0];
@@ -57,6 +58,7 @@ export class ParamHandler{
         this.initial_estimate()
 
         // enable loop for checking zoom level and monitor width :
+        this.testDownloadSpeed()
         this.checkloop()
     }
 
@@ -68,18 +70,54 @@ export class ParamHandler{
         this.computeDisplaySize();
     }
 
+
+    async testDownloadSpeed() {
+      console.log('started speed test')
+      var startTime, endTime;
+      startTime = (new Date()).getTime();
+  
+      try {
+        const response = await fetch(window.eyetracker.api_url + "/testspeed");
+        const data = await response.text();
+        console.log('received test file')
+
+        endTime = (new Date()).getTime();
+        var duration = (endTime - startTime) / 1000;
+        var bitsLoaded =  209715200 * 8 //209715200 * 8//1073741824 * 8;
+        var speedBps = (bitsLoaded / duration).toFixed(2);
+        var speedKbps = (speedBps / 1024).toFixed(2);
+        var speedMbps = (speedKbps / 1024).toFixed(2);
+        
+        console.log(`Your connection speed is: 
+          ${speedBps} bps
+          ${speedKbps} kbps
+          ${speedMbps} Mbps`);
+        this.speedMbps = parseFloat(speedMbps)
+      // return speedMbps
+      } catch (error) {
+          console.log(`Error fetching file: ${error}`);
+      }
+    } 
+
+    checkInternetSpeed(){
+      return !((this.speedMbps == null) || (this.speedMbps < 100))
+    }
+
     checkloop (){
         this.loop = setInterval(() => {
-            let zoom_level_ok = this.check_zoom_level();
+            let zoom_level_ok = !this.check_zoom_level(); // checkzoomlevel actually returns true if zoom is not oke
+            var internetspeed_ok = this.checkInternetSpeed();
+            // console.log("checked internet speed and is : ")
+            // console.log(internetspeed_ok)
             this.computeDisplaySize();
 
             // document.getElementById("proceed_button").disabled = false; // enable button to proceed
         
-            if(zoom_level_ok==false) {
-            document.getElementById("proceed_button").disabled = false; // enable button to proceed
+            if((zoom_level_ok) && (internetspeed_ok)) {
+              document.getElementById("proceed_button").disabled = false; // enable button to proceed
             }
             else {
-            document.getElementById("proceed_button").disabled = true; // disable button
+              document.getElementById("proceed_button").disabled = true; // disable button
             }
         
         }, 1000)

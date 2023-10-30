@@ -544,7 +544,7 @@ export async function testDownloadSpeed() {
           ${speedBps} bps
           ${speedKbps} kbps
           ${speedMbps} Mbps`);
-        return speedBps,speedKbps,speedMbps
+        // return {speedBps,speedKbps,speedMbps}
     } catch (error) {
         console.log(`Error fetching file: ${error}`);
     }
