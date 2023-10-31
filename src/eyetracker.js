@@ -146,6 +146,8 @@ class EyeTracker {
             showArrow: -1,
             trialNr: -1,
             respKey: -1,
+            respTime: -1,
+            mouseXY: -1,
             target_type: -1,
             fullscreen_on: -1,
             frameNr:-1,
