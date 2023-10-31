@@ -28,7 +28,7 @@ var jsPsych = initJsPsych({
       type: jsPsychCallFunction,
       async: true,
       func: function(done){
-        eyetracker.calibrate(done, undefined, numCalibDots=13);        
+        eyetracker.calibrate(done);        
       }
     }
    

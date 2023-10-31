@@ -96,11 +96,14 @@ export class ParamHandler{
       // return speedMbps
       } catch (error) {
           console.log(`Error fetching file: ${error}`);
+          clearInterval(this.loop);
+          document.getElementById('zoom_level_warning').innerHTML = 'The speed test failed. Please check your internet connection and refresh the page.';
+
       }
     } 
 
     checkInternetSpeed(){
-      return !((this.speedMbps == null) || (this.speedMbps < 100))
+      return !((this.speedMbps == null) || (this.speedMbps < 40))
     }
 
     checkloop (){
@@ -158,12 +161,22 @@ export class ParamHandler{
     check_zoom_level(){
 
       var zoomLevel = window.devicePixelRatio || 1;
+      var internetspeed_ok = this.checkInternetSpeed();
+
       // console.log("Zoom Level: " + zoomLevel);      
 
       // check if zoom level is an integer which likely means it is 100%      
       if(Number.isInteger(zoomLevel) == false) {
         document.getElementById('zoom_level_warning').innerHTML = 'Your zoom level might not be 100%. Please check';
         return true;
+      }
+      else if(this.speedMbps == null){
+        document.getElementById('zoom_level_warning').innerHTML = 'We are testing your internet speed. This message will dissapear when the test succeeds.';
+        return false
+      }
+      else if(this.speedMbps < 40){
+        document.getElementById('zoom_level_warning').innerHTML = 'Your internet speed is to slow. Please try a different network or connect to your current network with cabled connection.';
+        return false
       }
       else {
         document.getElementById('zoom_level_warning').innerHTML = '';
