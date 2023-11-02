@@ -103,7 +103,7 @@ export class ParamHandler{
     } 
 
     checkInternetSpeed(){
-      return !((this.speedMbps == null) || (this.speedMbps < 40))
+      return !((this.speedMbps == null) || (this.speedMbps < 25))
     }
 
     checkloop (){
