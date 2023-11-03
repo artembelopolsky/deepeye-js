@@ -22,7 +22,9 @@ export class ParamHandler{
         this.dpi_y;
         // Webcam position : 
         this.verticalDist;
-        this.speedMbps = null;
+        this.speedDwnMbps = [];
+        this.speedUpMbps = [];
+        this.minSpeed = 25;
 
         this.session_timestamp = new Date().toISOString().replace(/[T:-]/g, '_').replace(/\..+/, ''); //format timestamp, use as participant_id
     }
@@ -70,6 +72,31 @@ export class ParamHandler{
         this.computeDisplaySize();
     }
 
+    startSpeedTests(){
+      // for (let step=0;step<5;step++){
+      //   this.testDownloadSpeed()
+      // }
+      for (let step=0;step<5;step++){
+        this.testUploadSpeed()
+      }
+    }
+
+    async testUploadSpeed() {
+      let startTime = Date.now();
+      const formData = new FormData();
+      formData.append("file", new Blob([new ArrayBuffer(1000000)], { type: "application/octet-stream" }));
+
+      const response = await fetch(window.eyetracker.api_url = "/testUp", {
+          method: "POST",
+          body: formData,
+      });
+
+      const endTime = Date.now();
+      const duration = (endTime - startTime) / 1000; // in seconds
+      const uploadSpeed = 1 / (duration / 8); // Mbps
+      this.speedUpMbps.push(parseFfloat(uploadSpeed))
+
+  }
 
     async testDownloadSpeed() {
       console.log('started speed test')
@@ -77,13 +104,13 @@ export class ParamHandler{
       startTime = (new Date()).getTime();
   
       try {
-        const response = await fetch(window.eyetracker.api_url + "/testspeed");
+        const response = await fetch(window.eyetracker.api_url + "/testDown");
         const data = await response.text();
         console.log('received test file')
 
         endTime = (new Date()).getTime();
         var duration = (endTime - startTime) / 1000;
-        var bitsLoaded =  209715200 * 8 //209715200 * 8//1073741824 * 8;
+        var bitsLoaded =  5242880 * 8 //209715200 * 8//1073741824 * 8;
         var speedBps = (bitsLoaded / duration).toFixed(2);
         var speedKbps = (speedBps / 1024).toFixed(2);
         var speedMbps = (speedKbps / 1024).toFixed(2);
@@ -92,7 +119,7 @@ export class ParamHandler{
           ${speedBps} bps
           ${speedKbps} kbps
           ${speedMbps} Mbps`);
-        this.speedMbps = parseFloat(speedMbps)
+        this.speedDwnMbps.push(parseFloat(speedMbps))
       // return speedMbps
       } catch (error) {
           console.log(`Error fetching file: ${error}`);
@@ -103,7 +130,11 @@ export class ParamHandler{
     } 
 
     checkInternetSpeed(){
-      return !((this.speedMbps == null) || (this.speedMbps < 25))
+      if (this.speedUpMbps.length < 5)
+        return false
+      else if (this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length > this.minSpeed){ //compute aveage 
+        return true
+      };
     }
 
     checkloop (){
@@ -170,11 +201,11 @@ export class ParamHandler{
         document.getElementById('zoom_level_warning').innerHTML = 'Your zoom level might not be 100%. Please check';
         return true;
       }
-      else if(this.speedMbps == null){
+      else if(this.speedUpMbps.length == 0){
         document.getElementById('zoom_level_warning').innerHTML = 'We are testing your internet speed. This message will dissapear when the test succeeds.';
         return false
       }
-      else if(this.speedMbps < 40){
+      else if(this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length < this.minSpeed){
         document.getElementById('zoom_level_warning').innerHTML = 'Your internet speed is to slow. Please try a different network or connect to your current network with cabled connection.';
         return false
       }
