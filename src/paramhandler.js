@@ -24,7 +24,9 @@ export class ParamHandler{
         this.verticalDist;
         this.speedDwnMbps = [];
         this.speedUpMbps = [];
-        this.minSpeed = 25;
+        this.minSpeedDown = 25;
+        this.minSpeedUp = 15;
+
 
         this.session_timestamp = new Date().toISOString().replace(/[T:-]/g, '_').replace(/\..+/, ''); //format timestamp, use as participant_id
     }
@@ -60,7 +62,7 @@ export class ParamHandler{
         this.initial_estimate()
 
         // enable loop for checking zoom level and monitor width :
-        this.testDownloadSpeed()
+        this.startSpeedTests()
         this.checkloop()
     }
 
@@ -84,17 +86,18 @@ export class ParamHandler{
     async testUploadSpeed() {
       let startTime = Date.now();
       const formData = new FormData();
-      formData.append("file", new Blob([new ArrayBuffer(1000000)], { type: "application/octet-stream" }));
+      formData.append("file", new Blob([new ArrayBuffer(10000000)], { type: "application/octet-stream" }));
 
-      const response = await fetch(window.eyetracker.api_url = "/testUp", {
+      const response = await fetch(window.eyetracker.api_url + "/testUp/", {
           method: "POST",
           body: formData,
       });
 
       const endTime = Date.now();
       const duration = (endTime - startTime) / 1000; // in seconds
-      const uploadSpeed = 1 / (duration / 8); // Mbps
-      this.speedUpMbps.push(parseFfloat(uploadSpeed))
+      const uploadSpeed = 1 / (duration / 80); // Mbps
+      console.log('Measured upload speed :',uploadSpeed)
+      this.speedUpMbps.push(parseFloat(uploadSpeed))
 
   }
 
@@ -132,7 +135,7 @@ export class ParamHandler{
     checkInternetSpeed(){
       if (this.speedUpMbps.length < 5)
         return false
-      else if (this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length > this.minSpeed){ //compute aveage 
+      else if (this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length > this.minSpeedUp){ //compute aveage 
         return true
       };
     }
@@ -205,7 +208,7 @@ export class ParamHandler{
         document.getElementById('zoom_level_warning').innerHTML = 'We are testing your internet speed. This message will dissapear when the test succeeds.';
         return false
       }
-      else if(this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length < this.minSpeed){
+      else if(this.speedUpMbps.reduce((a, b) => a + b, 0)/this.speedUpMbps.length < this.minSpeedUp){
         document.getElementById('zoom_level_warning').innerHTML = 'Your internet speed is to slow. Please try a different network or connect to your current network with cabled connection.';
         return false
       }
