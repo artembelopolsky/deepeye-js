@@ -88,16 +88,24 @@ export class ParamHandler{
       const formData = new FormData();
       formData.append("file", new Blob([new ArrayBuffer(10000000)], { type: "application/octet-stream" }));
 
-      const response = await fetch(window.eyetracker.api_url + "/testUp/", {
-          method: "POST",
-          body: formData,
-      });
+      try{
+        const response = await fetch(window.eyetracker.api_url + "/testUp/", {
+            method: "POST",
+            body: formData,
+        });
 
-      const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000; // in seconds
-      const uploadSpeed = 1 / (duration / 80); // Mbps
-      console.log('Measured upload speed :',uploadSpeed)
-      this.speedUpMbps.push(parseFloat(uploadSpeed))
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000; // in seconds
+        const uploadSpeed = 1 / (duration / 80); // Mbps
+        console.log('Measured upload speed :',uploadSpeed)
+        this.speedUpMbps.push(parseFloat(uploadSpeed))
+
+      }catch(error){
+          console.log(`Error fetching file: ${error}`);
+          clearInterval(this.loop);
+          document.getElementById('zoom_level_warning').innerHTML = 'The speed test failed. Please check your internet connection and refresh the page.';
+      }
+
 
   }
 
