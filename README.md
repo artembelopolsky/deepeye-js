@@ -48,7 +48,7 @@ var jsPsych = initJsPsych({
       async: true,
       func: function(done){
 
-        eyetracker.api_token = 'B79QS8X5hI77bcUKvyt57vcVtpDfvrXRcR4mDU04iDp2v47lZmN506SPOPJ9';
+        eyetracker.api_token = '<Your deepeye study token>';
         eyetracker.setup(done);
         // window.helpers.testDownloadSpeed()
         
@@ -72,6 +72,8 @@ var jsPsych = initJsPsych({
   
   jsPsych.run(timeline);    
 ```
+
+The deepeye token in the above code can be acquired by creating a account at https://deepeye-swarm.psy.vu.nl/. You get a free demo token that will allow you to test our API. 
 
 Then finally it is possible to add any kind of data about experimental condition,trial number etcetera to your eyetracking data via the eyetracker.FrameDataLog. This is a object that by default contains following data: 
 ```
