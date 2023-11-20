@@ -25,7 +25,7 @@ export class ParamHandler{
         this.speedDwnMbps = [];
         this.speedUpMbps = [];
         this.minSpeedDown = 25;
-        this.minSpeedUp = 15;
+        this.minSpeedUp = 8;
 
 
         this.session_timestamp = new Date().toISOString().replace(/[T:-]/g, '_').replace(/\..+/, ''); //format timestamp, use as participant_id
