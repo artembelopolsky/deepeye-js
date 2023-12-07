@@ -2,7 +2,7 @@
 // import "main.js"
 
 var jsPsych = initJsPsych({     
-    on_finish: () => window.location.href = "https://deepeye-swarm.vu.nl/"
+    on_finish: () => window.location.href = "https://deepeye-swarm.psy.vu.nl/"
   });
 
 
