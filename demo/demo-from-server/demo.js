@@ -2,7 +2,7 @@
 // import "main.js"
 
 var jsPsych = initJsPsych({     
-    on_finish: () => window.location.href = "https://deepeye-swarm.vu.nl/"
+    on_finish: () => window.location.href = "https://deepeye-swarm.psy.vu.nl/"
   });
 
 
@@ -30,7 +30,7 @@ var jsPsych = initJsPsych({
       type: jsPsychCallFunction,
       async: true,
       func: function(done){
-        eyetracker.calibrate(done, undefined, numCalibDots=13);        
+        eyetracker.calibrate(done, undefined, numCalibDots=9);        
       }
     }
    

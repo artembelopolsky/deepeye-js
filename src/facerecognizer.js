@@ -173,7 +173,7 @@ export class FaceDetection {
 
           try {
             
-            detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+            detections = await faceapi.detectAllFaces(this.video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
             this.faceDetected = detections[0].detection.score;
             //faceDetected = detections[0].score;
             // console.log(`FaceDetectionsYES: ${this.faceDetected}`);
