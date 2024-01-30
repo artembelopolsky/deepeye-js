@@ -24,8 +24,8 @@ export class ParamHandler{
         this.verticalDist;
         this.speedDwnMbps = [];
         this.speedUpMbps = [];
-        this.minSpeedDown = 25;
-        this.minSpeedUp = 8;
+        this.minSpeedDown = 20;
+        this.minSpeedUp = 2;
 
 
         this.session_timestamp = new Date().toISOString().replace(/[T:-]/g, '_').replace(/\..+/, ''); //format timestamp, use as participant_id
@@ -210,7 +210,7 @@ export class ParamHandler{
       // check if zoom level is an integer which likely means it is 100%      
       if(Number.isInteger(zoomLevel) == false) {
         document.getElementById('zoom_level_warning').innerHTML = 'Your zoom level might not be 100%. Please check';
-        return true;
+        return false;
       }
       else if(this.speedUpMbps.length == 0){
         document.getElementById('zoom_level_warning').innerHTML = 'We are testing your internet speed. This message will dissapear when the test succeeds.';
