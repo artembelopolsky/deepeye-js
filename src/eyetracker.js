@@ -68,6 +68,7 @@ class EyeTracker {
         this.paramHandler = new ParamHandler(this, paramhtml);        
         this.faceDetection = new FaceDetection(this, facehtml);
         this.validation_html = validation_html;
+        this.recording_interval = false;
         this.base64data = [];
         this.reqeustcounter = 0;
         this.timestamp;
@@ -215,7 +216,7 @@ class EyeTracker {
         this.base64data = []; // remove the remaining logs that were not transfered
         var start_time = performance.now();
           
-        var interval = setInterval(function(){
+        this.recording_interval = setInterval(function(){
 
             eyetracker.FrameDataLog.timestamp = performance.now();
             var time_left = wait_time - (eyetracker.FrameDataLog.timestamp - start_time);          
@@ -231,12 +232,18 @@ class EyeTracker {
             if(time_left <= 0){                       
                 // document.getElementById('video').remove();
                       
-                clearInterval(interval);
+                clearInterval(this.recording_interval);
                 
                 
             }
         }, 33.33)
         
+    }
+
+    stopRecording(){
+        if (this.recording_interval != false){
+            clearInterval(this.recording_interval);
+        }
     }
 
     init_webcam(){        
