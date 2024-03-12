@@ -68,7 +68,7 @@ class EyeTracker {
         this.paramHandler = new ParamHandler(this, paramhtml);        
         this.faceDetection = new FaceDetection(this, facehtml);
         this.validation_html = validation_html;
-        this.recording_interval = false;
+        this.recording_intervals = []; // store all recording intervals, created by record() function
         this.base64data = [];
         this.reqeustcounter = 0;
         this.timestamp;
@@ -208,6 +208,9 @@ class EyeTracker {
 
     record(wait_time){
 
+        eyetracker.stopRecording(); // Stop any previous recording intervals before starting new ones
+        console.log('Recording started, recording_intervals:', eyetracker.recording_intervals);       
+        
         this.countErrRespRecording = 0; // reset counter of how many batches returned an error during /record request
         // html video tag for captureFrames() :
         //document.body.insertAdjacentHTML('afterbegin','<video class="layer2" id="video" autoplay hidden="true"></video>');
@@ -215,8 +218,9 @@ class EyeTracker {
         
         this.base64data = []; // remove the remaining logs that were not transfered
         var start_time = performance.now();
-          
-        this.recording_interval = setInterval(function(){
+        
+        // Start recording intervals and log them in a global variable
+        eyetracker.recording_intervals.push(setInterval(function(){
 
             eyetracker.FrameDataLog.timestamp = performance.now();
             var time_left = wait_time - (eyetracker.FrameDataLog.timestamp - start_time);          
@@ -230,20 +234,20 @@ class EyeTracker {
             }
 
             if(time_left <= 0){                       
-                // document.getElementById('video').remove();
-                      
-                clearInterval(this.recording_interval);
-                
-                
+                // document.getElementById('video').remove();                
+                eyetracker.stopRecording();              
             }
-        }, 33.33)
+        }, 33.33))
         
     }
 
     stopRecording(){
-        if (this.recording_interval != false){
-            clearInterval(this.recording_interval);
-        }
+        console.log('Stopping recording_intervals:', eyetracker.recording_intervals);
+        
+        // Stop all accumulated recording intervals
+        eyetracker.recording_intervals.forEach(intervalId => clearInterval(intervalId));
+        eyetracker.recording_intervals = []; // Reset the array
+        console.log('Recording stopped, recording_intervals reset:', eyetracker.recording_intervals);        
     }
 
     init_webcam(){        
