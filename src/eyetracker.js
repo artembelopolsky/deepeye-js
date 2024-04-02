@@ -85,7 +85,7 @@ class EyeTracker {
         this.type_dataset = 'train';
         this.index_conditions=0;
         this.frameCount=0;
-        this.api_url = "https://deepeye-swarm.psy.vu.nl/firebase"; //"https://deepeye.labs.vu.nl/firebase"; 
+        this.api_url = "https://deepeye-swarm.psy.vu.nl/firebase" //"http://34.49.131.46" //; //"https://deepeye.labs.vu.nl/firebase"; https://deepeye-swarm.psy.vu.nl
         this.api_token = ''; //shoud be set in experiment html file
         this.experiment_id = 'Default'; // Default name for experiment, name should be set in experiment script
         this.fullscreen = false;
